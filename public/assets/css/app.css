@@ -272,7 +272,10 @@ code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-si
   padding: 18px 14px;
   background: var(--bg);
   border-right: 1px solid var(--line);
+  overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
+.sidebar > * { min-width: 0; }
 
 .brand { display: inline-flex; align-items: center; gap: 10px; padding: 4px 8px; font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
 .brand-mark { width: 28px; height: 28px; flex: none; }
@@ -308,12 +311,15 @@ code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-si
   border-radius: 99px; background: var(--accent); box-shadow: 0 0 0 2px var(--bg);
 }
 
-.sidebar-foot { margin-top: auto; display: grid; gap: 10px; }
+.sidebar-foot { margin-top: auto; display: grid; gap: 10px; min-width: 0; }
+.sidebar-foot > * { min-width: 0; }
 .user-chip {
   display: flex; align-items: center; gap: 10px;
   padding: 10px; border-radius: var(--radius);
   border: 1px solid var(--line); background: var(--surface);
+  min-width: 0; overflow: hidden;
 }
+.user-chip form { flex: none; display: flex; }
 .avatar {
   display: grid; place-items: center; flex: none;
   width: 32px; height: 32px; border-radius: 9px;
@@ -321,8 +327,13 @@ code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-si
   font-weight: 600; font-size: 13px;
 }
 .user-chip .who { min-width: 0; flex: 1; line-height: 1.25; }
-.user-chip .who strong { display: block; font-size: 13.5px; font-weight: 500; }
-.user-chip .who span { display: block; font-size: 12px; color: var(--ink-3); }
+.user-chip .who strong,
+.user-chip .who span {
+  display: block; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.user-chip .who strong { font-size: 13.5px; font-weight: 500; }
+.user-chip .who span { font-size: 12px; color: var(--ink-3); }
 
 .shell-main { padding-left: var(--sidebar-w); min-width: 0; }
 
@@ -339,9 +350,9 @@ code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-si
 
 .scrim { display: none; }
 
-.page { max-width: 1180px; margin: 0 auto; padding: 36px 40px 72px; }
+.page { max-width: 1180px; margin: 0 auto; padding: clamp(20px, 3.4vh, 36px) 40px clamp(28px, 4vh, 44px); }
 
-.page-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 24px; margin-bottom: 28px; }
+.page-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 24px; margin-bottom: clamp(18px, 2.6vh, 28px); }
 .page-title { font-family: var(--font-serif); font-weight: 400; font-size: clamp(32px, 3.4vw, 42px); letter-spacing: -0.02em; line-height: 1.05; }
 .page-sub { margin-top: 6px; color: var(--ink-2); max-width: 60ch; }
 
@@ -360,7 +371,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-si
   }
   .shell-main { padding-left: 0; }
   .topbar { display: flex; }
-  .page { padding: 24px 16px 64px; }
+  .page { padding: 20px 16px 32px; }
   .page-header { margin-bottom: 20px; }
 }
 
@@ -828,10 +839,10 @@ details.more[open] summary { margin-bottom: 12px; }
 
 /* ---- Auth --------------------------------------------------------------- */
 .auth { min-height: 100dvh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-.auth-main { display: flex; flex-direction: column; padding: 28px 40px; }
-.auth-form { width: 100%; max-width: 380px; margin: auto; padding: 40px 0; }
-.auth-form h1 { font-family: var(--font-serif); font-weight: 400; font-size: 40px; letter-spacing: -0.02em; line-height: 1.05; }
-.auth-form .lede { margin-top: 10px; color: var(--ink-2); }
+.auth-main { display: flex; flex-direction: column; padding: clamp(16px, 2.6vh, 28px) 40px; }
+.auth-form { width: 100%; max-width: 380px; margin: auto; padding: clamp(8px, 3vh, 40px) 0; }
+.auth-form h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(30px, 4.4vh, 40px); letter-spacing: -0.02em; line-height: 1.05; }
+.auth-form .lede { margin-top: clamp(6px, 1vh, 10px); color: var(--ink-2); }
 .auth-aside {
   position: relative; overflow: hidden;
   margin: 12px; border-radius: 20px;
@@ -860,7 +871,7 @@ details.more[open] summary { margin-bottom: 12px; }
 .sheet-row:first-of-type { border-top: 0; }
 .sheet-row span:first-child { color: rgba(238, 243, 238, 0.7); }
 .auth-foot { font-size: 13px; color: var(--ink-3); }
-.pw-rules { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; margin-top: 8px; font-size: 12.5px; color: var(--ink-3); list-style: none; padding: 0; }
+.pw-rules { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 12px; margin-top: 6px; font-size: 12.5px; color: var(--ink-3); list-style: none; padding: 0; }
 .pw-rules li { display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
 .pw-rules li::before { content: ""; width: 6px; height: 6px; border-radius: 99px; background: var(--line-strong); transition: background-color 0.15s; }
 .pw-rules li.ok { color: var(--accent-ink); }
@@ -868,9 +879,9 @@ details.more[open] summary { margin-bottom: 12px; }
 .sheet-head { display: flex; justify-content: space-between; margin-bottom: 6px; color: rgba(238, 243, 238, 0.7); }
 .sheet-good { color: #8fdcb5; }
 .auth-cite { margin-top: 14px; font-size: 14px; color: rgba(238, 243, 238, 0.65); }
-.auth-alert { margin-top: 24px; }
-.auth-fields { --gap: 18px; margin-top: 28px; }
-.auth-switch { margin-top: 24px; font-size: 14px; color: var(--ink-2); }
+.auth-alert { margin-top: clamp(14px, 2.2vh, 24px); }
+.auth-fields { --gap: clamp(12px, 2vh, 18px); margin-top: clamp(16px, 3vh, 28px); }
+.auth-switch { margin-top: clamp(14px, 2.2vh, 24px); font-size: 14px; color: var(--ink-2); }
 @media (max-width: 960px) {
   .auth { grid-template-columns: minmax(0, 1fr); }
   .auth-aside { display: none; }
