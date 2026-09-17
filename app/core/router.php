@@ -23,6 +23,8 @@ function routes(): array
         'reports' => ['reports'],
         'notifications' => ['notifications'],
         'settings' => ['settings'],
+        'health' => ['health'],
+        'healthz' => ['health'],
     ];
 }
 
