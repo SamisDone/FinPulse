@@ -102,6 +102,11 @@ function migrate(PDO $pdo): void
             'expenses' => ['recurring_source_id' => 'INTEGER NULL'],
         ];
         foreach ($columns as $table => $defs) {
+            // A half-created database can have users without the rest; the schema
+            // file below creates whatever is missing, so skip it here.
+            if (!table_exists($pdo, $table)) {
+                continue;
+            }
             $existing = column_names($pdo, $table);
             foreach ($defs as $column => $definition) {
                 if (!in_array($column, $existing, true)) {
