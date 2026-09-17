@@ -45,6 +45,8 @@ test('an older database upgrades to the current schema without losing data', fun
             expense_date DATE NOT NULL,
             description VARCHAR(255),
             is_recurring SMALLINT DEFAULT 0,
+            recurrence_period VARCHAR(20),
+            next_recurrence_date DATE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )');
