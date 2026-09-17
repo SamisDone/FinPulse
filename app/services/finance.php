@@ -2,7 +2,7 @@
 /**
  * Domain calculations shared by the overview, budgets and savings pages.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 function total_between(string $table, int $user_id, string $from, string $to): float
 {

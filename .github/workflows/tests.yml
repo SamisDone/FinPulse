@@ -32,7 +32,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: finpulse_test
+          MYSQL_DATABASE: sixpence_test
         ports: ['3306:3306']
         options: >-
           --health-cmd="mysqladmin ping -proot"
@@ -50,6 +50,6 @@ jobs:
           DB_TYPE: mysql
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
-          DB_NAME: finpulse_test
+          DB_NAME: sixpence_test
           DB_USER: root
           DB_PASS: root

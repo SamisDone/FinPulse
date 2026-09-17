@@ -6,7 +6,7 @@
  *
  * It adds recurring entries that have come due, runs notification checks for every user
  * (budget alerts, upcoming payments, monthly summaries) and sends queued email.
- * FinPulse also does all of this while people use it; cron keeps things moving when nobody is signed in.
+ * Sixpence also does all of this while people use it; cron keeps things moving when nobody is signed in.
  */
 if (PHP_SAPI !== 'cli') {
     http_response_code(404);

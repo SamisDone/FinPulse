@@ -3,7 +3,7 @@
  * General helpers: output escaping, redirects and flash messages,
  * form state, validation, money and date formatting.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 /* ---------------------------------------------------------------------------
  * Output & requests
@@ -169,12 +169,12 @@ function currencies(): array
 /** Format money in a specific currency, e.g. when a background job works through several users. */
 function use_currency(?string $code): void
 {
-    $GLOBALS['finpulse_currency'] = $code;
+    $GLOBALS['sixpence_currency'] = $code;
 }
 
 function currency_code(): string
 {
-    $code = $GLOBALS['finpulse_currency'] ?? (current_user()['currency'] ?? 'USD');
+    $code = $GLOBALS['sixpence_currency'] ?? (current_user()['currency'] ?? 'USD');
     return isset(currencies()[$code]) ? $code : 'USD';
 }
 

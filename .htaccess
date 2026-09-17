@@ -1,4 +1,4 @@
-# FinPulse: fallback for hosts where the document root can't point at public/.
+# Sixpence: fallback for hosts where the document root can't point at public/.
 # Everything is served from public/; app code, the database and scripts stay unreachable.
 
 Options -Indexes

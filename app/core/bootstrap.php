@@ -1,11 +1,11 @@
 <?php
 /**
- * FinPulse bootstrap: loaded first by the web front controller, CLI scripts and tests.
+ * Sixpence bootstrap: loaded first by the web front controller, CLI scripts and tests.
  * Loads configuration, connects the helper libraries, and hardens the HTTP session.
  */
 declare(strict_types=1);
 
-define('FINPULSE', true);
+define('SIXPENCE', true);
 define('APP_ROOT', dirname(__DIR__, 2));
 define('APP_VERSION', '2.1.0');
 
@@ -39,7 +39,7 @@ if (PHP_SAPI !== 'cli') {
     send_security_headers();
 
     set_exception_handler(static function (Throwable $e) use ($debug): void {
-        error_log('[FinPulse] ' . $e);
+        error_log('[Sixpence] ' . $e);
         render_error_page(
             500,
             'Something went wrong',

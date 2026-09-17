@@ -1,5 +1,5 @@
 <?php
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 $user = require_login();
 $uid = $user['id'];

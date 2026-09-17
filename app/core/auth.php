@@ -2,7 +2,7 @@
 /**
  * Authentication: CSRF protection, registration, throttled login, sessions and password resets.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 const LOGIN_MAX_ATTEMPTS = 5;
 const LOGIN_LOCKOUT_SECONDS = 900;
@@ -304,10 +304,10 @@ function request_password_reset(string $email): void
     queue_mail(
         $user['email'],
         $user['username'],
-        'Reset your FinPulse password',
+        'Reset your Sixpence password',
         email_template(
             'Reset your password',
-            ['Someone (hopefully you) asked to reset the password for the FinPulse account ' . $user['username'] . '.', 'This link works once and expires in 60 minutes. If you didn\'t ask for this, you can ignore this email and your password won\'t change.'],
+            ['Someone (hopefully you) asked to reset the password for the Sixpence account ' . $user['username'] . '.', 'This link works once and expires in 60 minutes. If you didn\'t ask for this, you can ignore this email and your password won\'t change.'],
             ['Choose a new password', $link]
         )
     );

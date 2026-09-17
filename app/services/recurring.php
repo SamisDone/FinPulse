@@ -7,7 +7,7 @@
  * back at the original) and the next date moves forward. Dates are always computed from the
  * original entry's date, so a bill on the 31st lands on Feb 28 and then on Mar 31 again.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 const RECURRING_MAX_CATCH_UP = 400;
 

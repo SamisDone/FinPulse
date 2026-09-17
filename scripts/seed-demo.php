@@ -28,7 +28,7 @@ if ($id = $existing->fetchColumn()) {
     $pdo->prepare('DELETE FROM users WHERE id = ?')->execute([$id]);
 }
 
-[$uid, $errors] = register_user(DEMO_USER, 'demo@finpulse.local', DEMO_PASSWORD, DEMO_PASSWORD);
+[$uid, $errors] = register_user(DEMO_USER, 'demo@sixpence.local', DEMO_PASSWORD, DEMO_PASSWORD);
 if ($errors) {
     fwrite(STDERR, implode("\n", $errors) . "\n");
     exit(1);
@@ -146,6 +146,6 @@ process_recurring($uid);
 $user = db()->prepare('SELECT * FROM users WHERE id = ?');
 $user->execute([$uid]);
 run_notification_checks($user->fetch());
-db()->prepare('DELETE FROM mail_queue WHERE to_email = ?')->execute(['demo@finpulse.local']);
+db()->prepare('DELETE FROM mail_queue WHERE to_email = ?')->execute(['demo@sixpence.local']);
 
 echo "Demo account ready.\n  Username: " . DEMO_USER . "\n  Password: " . DEMO_PASSWORD . "\n";

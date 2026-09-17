@@ -3,7 +3,7 @@
  * Routing and URL generation. public/index.php is the only web entry point;
  * every page lives in app/pages and is reached through a clean URL like /expenses.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 /** URL path => [page file in app/pages, arguments available to the page as $route_args]. */
 function routes(): array
@@ -35,7 +35,7 @@ function legacy_routes(): array
 }
 
 /**
- * The URL prefix the app is served from: '' at a domain root, '/finpulse' in a subfolder.
+ * The URL prefix the app is served from: '' at a domain root, '/sixpence' in a subfolder.
  * Handles both a document root pointing at public/ and the root .htaccess fallback.
  */
 function base_path(): string
@@ -70,7 +70,7 @@ function request_path(): string
 
 function current_route(): string
 {
-    return $GLOBALS['finpulse_route'] ?? '';
+    return $GLOBALS['sixpence_route'] ?? '';
 }
 
 function url(string $route = '', array $query = [], string $fragment = ''): string
@@ -129,6 +129,6 @@ function dispatch(): void
     }
 
     [$page, $route_args] = $routes[$path] + [1 => []];
-    $GLOBALS['finpulse_route'] = $path;
+    $GLOBALS['sixpence_route'] = $path;
     require APP_ROOT . '/app/pages/' . $page . '.php';
 }

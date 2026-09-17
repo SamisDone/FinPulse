@@ -1,5 +1,5 @@
 <?php
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 $user = require_login();
 $uid = $user['id'];
@@ -73,7 +73,7 @@ page_header('Notifications', $unread ? plural(count($unread), 'unread notificati
 
 <?php if (!$items): ?>
 <section class="panel">
-  <?= empty_state('bell', 'No notifications yet', 'You\'ll hear from FinPulse when a budget runs hot, a recurring payment is coming up, or a new month\'s summary is ready.') ?>
+  <?= empty_state('bell', 'No notifications yet', 'You\'ll hear from Sixpence when a budget runs hot, a recurring payment is coming up, or a new month\'s summary is ready.') ?>
 </section>
 <?php else: ?>
   <?php if ($unread): ?>

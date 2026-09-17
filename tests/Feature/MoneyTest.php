@@ -114,7 +114,7 @@ test('reports export CSV with formula protection and a real PDF', function () {
     $http->get('/reports?range=this-month&export=pdf');
     expect_same('application/pdf', $http->headers['content-type']);
     expect_same('%PDF-1.4', substr($http->body, 0, 8));
-    expect_contains('attachment; filename="finpulse_', $http->headers['content-disposition']);
+    expect_contains('attachment; filename="sixpence_', $http->headers['content-disposition']);
 });
 
 test('notification and currency settings are saved', function () {

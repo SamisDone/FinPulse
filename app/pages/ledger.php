@@ -3,7 +3,7 @@
  * Income and Expenses ledgers. Both pages have the same shape; the config describes what differs.
  * Routed from /income and /expenses with $route_args['kind'].
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 const TX_PER_PAGE = 25;
 

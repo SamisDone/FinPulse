@@ -1,5 +1,5 @@
 <?php
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 $token = is_post() ? input('token') : query('token');
 $reset = find_password_reset($token);

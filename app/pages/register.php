@@ -1,5 +1,5 @@
 <?php
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 redirect_if_logged_in();
 

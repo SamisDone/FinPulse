@@ -1,4 +1,4 @@
--- FinPulse schema for MySQL 8 / MariaDB 10.5+.
+-- Sixpence schema for MySQL 8 / MariaDB 10.5+.
 -- Applied and upgraded automatically by app/core/db.php. Safe to re-run.
 
 CREATE TABLE IF NOT EXISTS users (

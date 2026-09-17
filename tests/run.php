@@ -1,6 +1,6 @@
 <?php
 /**
- * FinPulse test runner.
+ * Sixpence test runner.
  *
  *   php tests/run.php                 # everything
  *   php tests/run.php unit            # unit tests only
@@ -25,7 +25,7 @@ foreach (array_slice($argv, 1) as $arg) {
 }
 
 // Isolated environment, set before the app boots so nothing touches real data.
-$dir = sys_get_temp_dir() . '/finpulse-tests-' . getmypid() . '-' . bin2hex(random_bytes(3));
+$dir = sys_get_temp_dir() . '/sixpence-tests-' . getmypid() . '-' . bin2hex(random_bytes(3));
 mkdir($dir . '/mail', 0775, true);
 foreach ([
     'APP_DEBUG' => 'true',
@@ -34,7 +34,7 @@ foreach ([
     'DB_PATH' => $dir . '/test.db',
     'MAIL_DRIVER' => 'log',
     'MAIL_LOG_PATH' => $dir . '/mail',
-    'FINPULSE_TEST_DIR' => $dir,
+    'SIXPENCE_TEST_DIR' => $dir,
 ] as $key => $value) {
     putenv("$key=$value");
 }
@@ -72,7 +72,7 @@ $passed = 0;
 $failures = [];
 $started = microtime(true);
 $current_suite = null;
-printf("FinPulse %s · PHP %s · %s\n", APP_VERSION, PHP_VERSION, db_is_mysql() ? 'MySQL' : 'SQLite');
+printf("Sixpence %s · PHP %s · %s\n", APP_VERSION, PHP_VERSION, db_is_mysql() ? 'MySQL' : 'SQLite');
 
 foreach (TestRegistry::$tests as $test) {
     if ($filter !== null && stripos($test['name'], $filter) === false) {

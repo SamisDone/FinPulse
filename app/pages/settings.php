@@ -1,5 +1,5 @@
 <?php
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 $user = require_login();
 $uid = $user['id'];
@@ -60,9 +60,9 @@ if (is_post()) {
 
         case 'test_email':
             try {
-                $file = send_mail($user['email'], $user['username'], 'FinPulse test email', email_template(
+                $file = send_mail($user['email'], $user['username'], 'Sixpence test email', email_template(
                     'Email is working',
-                    ['This is a test from your FinPulse at ' . app_url() . '. Budget alerts, reminders, summaries and password resets will arrive the same way.']
+                    ['This is a test from your Sixpence at ' . app_url() . '. Budget alerts, reminders, summaries and password resets will arrive the same way.']
                 ));
                 flash('success', $file
                     ? 'Email is in log mode, so the test was saved to ' . str_replace(APP_ROOT . DIRECTORY_SEPARATOR, '', str_replace('/', DIRECTORY_SEPARATOR, $file)) . ' instead of being sent.'
@@ -183,7 +183,7 @@ page_header('Settings', 'Your account, preferences, notifications and data.');
   <section class="settings-section" id="notifications" aria-labelledby="notifications-title">
     <div>
       <h2 id="notifications-title">Notifications</h2>
-      <p class="desc">Choose what FinPulse tells you about. Notifications always appear under <a class="link" href="<?= e(url('notifications')) ?>">Notifications</a>; email is optional.</p>
+      <p class="desc">Choose what Sixpence tells you about. Notifications always appear under <a class="link" href="<?= e(url('notifications')) ?>">Notifications</a>; email is optional.</p>
     </div>
     <div class="stack stack-lg">
       <form class="stack" method="post" action="<?= e(url('settings')) ?>">

@@ -3,7 +3,7 @@
  * A small, dependency-free PDF writer: vector shapes and real (selectable, searchable) text
  * in the built-in Helvetica fonts. Coordinates are in points from the top-left corner.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 final class PdfDocument
 {
@@ -21,7 +21,7 @@ final class PdfDocument
     /** @var array<string, int[]> */
     private static array $widths = [];
 
-    public function __construct(private string $title, private string $author = 'FinPulse')
+    public function __construct(private string $title, private string $author = 'Sixpence')
     {
     }
 
@@ -161,7 +161,7 @@ final class PdfDocument
                 '<< /Title %s /Author %s /Producer %s /CreationDate (D:%s) >>',
                 self::literal(self::encode($this->title)),
                 self::literal(self::encode($this->author)),
-                self::literal('FinPulse ' . APP_VERSION),
+                self::literal('Sixpence ' . APP_VERSION),
                 date('YmdHis')
             ),
         ];

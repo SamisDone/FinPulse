@@ -1,16 +1,16 @@
 <?php
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 redirect_if_logged_in();
 
-page_open('FinPulse', [
+page_open('Sixpence', [
     'description' => 'A quiet ledger for income, spending, budgets and savings goals. No bank logins, no trackers, and your data is yours to export.',
 ]);
 ?>
 <div class="site">
   <header class="site-header">
     <div class="wrap">
-      <a class="brand" href="<?= e(url()) ?>"><?= brand_mark() ?><span>FinPulse</span></a>
+      <a class="brand" href="<?= e(url()) ?>"><?= brand_mark() ?><span>Sixpence</span></a>
       <nav class="site-nav" aria-label="Primary">
         <a class="text-link hide-sm" href="#features">Features</a>
         <a class="text-link hide-sm" href="#privacy">Privacy</a>
@@ -25,7 +25,7 @@ page_open('FinPulse', [
       <div class="wrap hero-grid">
         <div>
           <h1>Know where your money <em>went</em>, and where it's going.</h1>
-          <p class="lede">FinPulse is a quiet ledger for your income, spending, budgets and savings goals. Log what happens, see whether you're on pace, and never hand over a bank login.</p>
+          <p class="lede">Sixpence is a quiet ledger for your income, spending, budgets and savings goals. Log what happens, see whether you're on pace, and never hand over a bank login.</p>
           <div class="hero-cta">
             <a class="btn btn-primary btn-lg" href="<?= e(url('register')) ?>">Start your ledger <?= icon('arrow-right') ?></a>
             <a class="link" href="<?= e(url('login')) ?>">I already have an account</a>
@@ -81,7 +81,7 @@ page_open('FinPulse', [
             <span class="glyph"><?= icon('target') ?></span>
             <div>
               <h3>Goals with a monthly number</h3>
-              <p>Set a target and a date and FinPulse tells you how much to put aside each month. Add money as you save and watch the goal close out.</p>
+              <p>Set a target and a date and Sixpence tells you how much to put aside each month. Add money as you save and watch the goal close out.</p>
             </div>
           </article>
           <article class="feature">
@@ -101,7 +101,7 @@ page_open('FinPulse', [
         <div class="facts">
           <div class="fact"><strong>No bank connections</strong><p>You enter what matters. No credentials to leak, no aggregator reading your statements.</p></div>
           <div class="fact"><strong>Your data, exportable</strong><p>Download every entry as a spreadsheet, or any report as a PDF, whenever you like.</p></div>
-          <div class="fact"><strong>No trackers</strong><p>No analytics, no ads, no third-party cookies. Even the fonts and charts load from FinPulse itself.</p></div>
+          <div class="fact"><strong>No trackers</strong><p>No analytics, no ads, no third-party cookies. Even the fonts and charts load from Sixpence itself.</p></div>
           <div class="fact"><strong>Locked down</strong><p>Hashed passwords, sign-in throttling, and a strict security policy. Changing your password signs out every other device.</p></div>
         </div>
       </div>
@@ -119,7 +119,7 @@ page_open('FinPulse', [
 
   <footer class="site-footer">
     <div class="wrap">
-      <a class="brand" href="<?= e(url()) ?>"><?= brand_mark() ?><span>FinPulse</span></a>
+      <a class="brand" href="<?= e(url()) ?>"><?= brand_mark() ?><span>Sixpence</span></a>
       <p>&copy; <?= date('Y') ?> Samonwita Sarker. All rights reserved.</p>
     </div>
   </footer>

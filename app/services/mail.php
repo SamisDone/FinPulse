@@ -3,7 +3,7 @@
  * Outgoing email: a small queue, MIME building, and drivers for SMTP, PHP's mail(),
  * a log driver that writes .eml files (the default, handy during development), or none.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 const MAIL_MAX_ATTEMPTS = 5;
 
@@ -27,8 +27,8 @@ function mail_from(): array
 {
     $host = parse_url(app_url(), PHP_URL_HOST) ?: 'localhost';
     $domain = str_contains($host, '.') && !filter_var($host, FILTER_VALIDATE_IP) ? $host : 'localhost.localdomain';
-    $address = env('MAIL_FROM_ADDRESS', 'finpulse@' . $domain);
-    return [$address, env('MAIL_FROM_NAME', 'FinPulse')];
+    $address = env('MAIL_FROM_ADDRESS', 'sixpence@' . $domain);
+    return [$address, env('MAIL_FROM_NAME', 'Sixpence')];
 }
 
 /* ---------------------------------------------------------------------------
@@ -70,7 +70,7 @@ function schedule_mail_flush(): void
         try {
             flush_mail_queue(10);
         } catch (Throwable $e) {
-            error_log('[FinPulse] Mail queue: ' . $e->getMessage());
+            error_log('[Sixpence] Mail queue: ' . $e->getMessage());
         }
     });
 }
@@ -102,7 +102,7 @@ function flush_mail_queue(int $limit = 50): array
             $attempts = (int) $row['attempts'] + 1;
             db()->prepare('UPDATE mail_queue SET attempts = ?, last_error = ?, available_at = ? WHERE id = ?')
                 ->execute([$attempts, mb_substr($e->getMessage(), 0, 500), time() + 60 * (2 ** $attempts), $row['id']]);
-            error_log('[FinPulse] Email to ' . $row['to_email'] . ' failed: ' . $e->getMessage());
+            error_log('[Sixpence] Email to ' . $row['to_email'] . ' failed: ' . $e->getMessage());
             $result['failed']++;
             $result['errors'][] = $e->getMessage();
         }
@@ -178,7 +178,7 @@ function build_mime(string $from_email, string $from_name, string $to_email, ?st
         'Date: ' . date(DATE_RFC2822),
         'Message-ID: <' . bin2hex(random_bytes(16)) . '@' . $domain . '>',
         'MIME-Version: 1.0',
-        'X-Mailer: FinPulse/' . APP_VERSION,
+        'X-Mailer: Sixpence/' . APP_VERSION,
         'Content-Type: multipart/alternative; boundary="' . $boundary . '"',
     ]);
 
@@ -351,7 +351,7 @@ function email_template(string $heading, array $paragraphs, ?array $button = nul
     if ($button) {
         $text .= "\n\n{$button[0]}:\n{$button[1]}";
     }
-    $text .= "\n\n--\nFinPulse · " . app_url() . "\nManage notifications: " . absolute_url('settings', [], 'notifications') . "\n";
+    $text .= "\n\n--\nSixpence · " . app_url() . "\nManage notifications: " . absolute_url('settings', [], 'notifications') . "\n";
 
     $p = implode('', array_map(static fn($para) => '<p style="margin:0 0 14px;font-size:15px;line-height:1.55;color:#57544c">' . e($para) . '</p>', $paragraphs));
     $table = '';
@@ -373,12 +373,12 @@ function email_template(string $heading, array $paragraphs, ?array $button = nul
         . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f3ee;padding:32px 12px"><tr><td align="center">'
         . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif">'
         . '<tr><td style="padding:0 4px 16px;font-size:16px;font-weight:600;color:#1c1b18">'
-        . '<span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#1c1b18;vertical-align:middle;margin-right:8px"></span>FinPulse</td></tr>'
+        . '<span style="display:inline-block;width:22px;height:22px;border-radius:6px;background:#1c1b18;vertical-align:middle;margin-right:8px"></span>Sixpence</td></tr>'
         . '<tr><td style="background:#ffffff;border:1px solid #e4e0d7;border-radius:14px;padding:28px">'
         . '<h1 style="margin:0 0 14px;font-family:Georgia,Times New Roman,serif;font-weight:400;font-size:28px;line-height:1.15;color:#1c1b18">' . e($heading) . '</h1>'
         . $p . $table . $cta
         . '</td></tr>'
-        . '<tr><td style="padding:16px 4px;font-size:12px;line-height:1.5;color:#85817a">Sent by FinPulse at ' . e(app_url()) . '. '
+        . '<tr><td style="padding:16px 4px;font-size:12px;line-height:1.5;color:#85817a">Sent by Sixpence at ' . e(app_url()) . '. '
         . '<a href="' . e(absolute_url('settings', [], 'notifications')) . '" style="color:#0b6840">Manage notifications</a></td></tr>'
         . '</table></td></tr></table></body></html>';
 

@@ -2,7 +2,7 @@
 /**
  * Database connection (SQLite by default, MySQL/MariaDB optional) and schema migrations.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 const SCHEMA_VERSION = 3;
 
@@ -25,13 +25,13 @@ function db(): PDO
                 $parts = parse_url($databaseUrl);
                 $host = $parts['host'] ?? '127.0.0.1';
                 $port = isset($parts['port']) ? (string) $parts['port'] : '3306';
-                $dbname = !empty($parts['path']) && $parts['path'] !== '/' ? ltrim($parts['path'], '/') : env('DB_NAME', 'finpulse');
+                $dbname = !empty($parts['path']) && $parts['path'] !== '/' ? ltrim($parts['path'], '/') : env('DB_NAME', 'sixpence');
                 $user = isset($parts['user']) ? urldecode($parts['user']) : env('DB_USER', 'root');
                 $pass = isset($parts['pass']) ? urldecode($parts['pass']) : env('DB_PASS', '');
             } else {
                 $host = env('DB_HOST', '127.0.0.1');
                 $port = env('DB_PORT', '3306');
-                $dbname = env('DB_NAME', 'finpulse');
+                $dbname = env('DB_NAME', 'sixpence');
                 $user = env('DB_USER', 'root');
                 $pass = env('DB_PASS', '');
             }
@@ -77,7 +77,7 @@ function db(): PDO
             }
         }
     } catch (PDOException $e) {
-        error_log('[FinPulse] Database connection failed: ' . $e->getMessage());
+        error_log('[Sixpence] Database connection failed: ' . $e->getMessage());
         throw new RuntimeException('Could not connect to the database. Check the DB_* settings in .env.');
     }
 
@@ -104,7 +104,7 @@ function sqlite_path(): string
         return project_path($configured);
     }
     $legacy = APP_ROOT . '/finance_tracker.db';
-    return is_file($legacy) ? $legacy : APP_ROOT . '/storage/finpulse.db';
+    return is_file($legacy) ? $legacy : APP_ROOT . '/storage/sixpence.db';
 }
 
 /* ---------------------------------------------------------------------------

@@ -4,7 +4,7 @@
 function start_fake_smtp(array $extra = []): array
 {
     $port = free_port();
-    $transcript = getenv('FINPULSE_TEST_DIR') . "/smtp-$port.log";
+    $transcript = getenv('SIXPENCE_TEST_DIR') . "/smtp-$port.log";
     $process = proc_open([PHP_BINARY, __DIR__ . '/../fixtures/fake-smtp.php', (string) $port, $transcript, ...$extra], [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
     // The fake server accepts a single connection, so wait for its signal instead of probing the port.
     if (trim((string) fgets($pipes[1])) !== 'listening') {

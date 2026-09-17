@@ -1,4 +1,4 @@
-/* FinPulse charts — thin wrapper over Chart.js that follows the design tokens.
+/* Sixpence charts — thin wrapper over Chart.js that follows the design tokens.
  *
  * Markup contract:
  *   <div class="chart" data-chart="chart-id"><canvas role="img" aria-label="…"></canvas></div>
@@ -137,7 +137,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', renderAll);
-  document.addEventListener('finpulse:themechange', () => requestAnimationFrame(renderAll));
+  document.addEventListener('sixpence:themechange', () => requestAnimationFrame(renderAll));
 
-  window.finpulseCharts = { renderAll };
+  window.sixpenceCharts = { renderAll };
 })();

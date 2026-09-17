@@ -1,6 +1,6 @@
 FROM php:8.3-apache
 
-# ── PHP extensions needed by FinPulse ─────────────────────────────────────────
+# ── PHP extensions needed by Sixpence ─────────────────────────────────────────
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         cron \
@@ -30,7 +30,7 @@ RUN { \
     echo 'post_max_size=12M'; \
     echo 'memory_limit=128M'; \
     echo 'date.timezone=UTC'; \
-} > /usr/local/etc/php/conf.d/finpulse.ini
+} > /usr/local/etc/php/conf.d/sixpence.ini
 
 # ── Copy the application ──────────────────────────────────────────────────────
 COPY . /var/www/html/
@@ -40,10 +40,10 @@ RUN mkdir -p /var/www/html/storage/mail \
     && chown -R www-data:www-data /var/www/html/storage
 
 # ── Cron: run scripts/cron.php every 15 minutes ──────────────────────────────
-RUN echo '*/15 * * * * www-data php /var/www/html/scripts/cron.php >> /var/log/finpulse-cron.log 2>&1' \
-    > /etc/cron.d/finpulse \
-    && chmod 0644 /etc/cron.d/finpulse \
-    && crontab -u www-data /etc/cron.d/finpulse
+RUN echo '*/15 * * * * www-data php /var/www/html/scripts/cron.php >> /var/log/sixpence-cron.log 2>&1' \
+    > /etc/cron.d/sixpence \
+    && chmod 0644 /etc/cron.d/sixpence \
+    && crontab -u www-data /etc/cron.d/sixpence
 
 # ── Entrypoint: start cron alongside Apache ───────────────────────────────────
 COPY docker-entrypoint.sh /usr/local/bin/

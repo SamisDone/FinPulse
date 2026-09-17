@@ -2,7 +2,7 @@
 /**
  * Inline SVG icon set. One stroke weight (set in CSS), 24px grid, currentColor.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 function icon(string $name, string $class = 'icon'): string
 {
@@ -53,7 +53,7 @@ function icon(string $name, string $class = 'icon'): string
     return '<svg class="' . htmlspecialchars($class, ENT_QUOTES) . '" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' . $body . '</svg>';
 }
 
-/** The FinPulse mark: a ledger tile with a pulse line. */
+/** The Sixpence mark: a ledger tile with a pulse line. */
 function brand_mark(string $class = 'brand-mark'): string
 {
     return '<svg class="' . htmlspecialchars($class, ENT_QUOTES) . '" viewBox="0 0 32 32" aria-hidden="true">'

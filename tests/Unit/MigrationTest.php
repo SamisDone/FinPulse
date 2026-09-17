@@ -4,7 +4,7 @@ test('a 1.x SQLite database upgrades to the current schema without losing data',
     if (db_is_mysql()) {
         return; // The fixture is the original SQLite schema.
     }
-    $file = getenv('FINPULSE_TEST_DIR') . '/legacy-' . bin2hex(random_bytes(3)) . '.db';
+    $file = getenv('SIXPENCE_TEST_DIR') . '/legacy-' . bin2hex(random_bytes(3)) . '.db';
     $legacy = new PDO('sqlite:' . $file);
     $legacy->exec(file_get_contents(__DIR__ . '/../fixtures/schema-v1.sqlite.sql'));
     $legacy->exec("ALTER TABLE users ADD COLUMN notification_preferences TEXT DEFAULT '{}'");

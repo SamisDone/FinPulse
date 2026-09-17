@@ -2,7 +2,7 @@
 /**
  * Report data shared by the Reports page, the PDF export and the monthly summary.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 function report_presets(): array
 {

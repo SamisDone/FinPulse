@@ -1,5 +1,5 @@
 <?php
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 // Sign-out is a POST so other sites can't log people out with a link or image tag.
 if (!is_post()) {

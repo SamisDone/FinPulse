@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/media/banner.svg" alt="FinPulse: know where your money went, and where it's going" width="100%">
+  <img src="docs/media/banner.svg" alt="Sixpence: know where your money went, and where it's going" width="100%">
 </p>
 
 <p align="center">
@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <a href="http://finpulse.infinityfree.me/"><b>Try FinPulse →</b></a>
+  <a href="http://finpulse.infinityfree.me/"><b>Try Sixpence →</b></a>
 </p>
 
 <p align="center">
@@ -35,9 +35,9 @@
 
 ---
 
-## Why FinPulse
+## Why Sixpence
 
-Most budgeting apps want your bank credentials, your attention and eventually a monthly fee. FinPulse asks for none of that.
+Most budgeting apps want your bank credentials, your attention and eventually a monthly fee. Sixpence asks for none of that.
 
 - **Built for a monthly check-in.** Open it, log what happened, see whether you're on pace, and close it.
 - **Honest numbers.** Month-to-date comparisons are made against *the same point* last month, not the whole month, so the middle of the month doesn't make you look like a saint.
@@ -71,7 +71,7 @@ Mark rent, a paycheck or a subscription as repeating weekly, every two weeks, mo
 Each budget shows what you've spent, what's left **per day**, and a marker on the bar for where an even pace would put you today. Statuses read like a person would say them: *On pace*, *Spending fast*, *Over limit*, *Stayed under*. Add optional caps per category, and pick Weekly, Monthly or Yearly to have the end date filled in for you.
 
 ### Savings goals with a monthly number
-Give a goal a target and a date and FinPulse works out how much to set aside each month. Use **Add money** as you save; goals move to *Reached* when they're funded.
+Give a goal a target and a date and Sixpence works out how much to set aside each month. Use **Add money** as you save; goals move to *Reached* when they're funded.
 
 ### Notifications, in the app and by email
 - **Budget alerts** at 80% and when a budget or category cap goes over
@@ -87,7 +87,7 @@ Pick a range (this month, last month, last 3 or 12 months, year to date, or cust
 **Download PDF** produces a real vector document with selectable, searchable text; **CSV** gives you every entry for a spreadsheet.
 
 <p align="center">
-  <img src="docs/media/report-pdf.png" alt="First page of a FinPulse PDF report with summary figures, an income and spending bar chart, a running balance chart and a spending-by-category table" width="60%">
+  <img src="docs/media/report-pdf.png" alt="First page of a Sixpence PDF report with summary figures, an income and spending bar chart, a running balance chart and a spending-by-category table" width="60%">
 </p>
 
 ### Everything else
@@ -146,7 +146,7 @@ Pick a range (this month, last month, last 3 or 12 months, year to date, or cust
 <details>
 <summary><b>Landing page, sign in and password reset</b></summary>
 <br>
-<img src="docs/media/landing.png" alt="FinPulse landing page">
+<img src="docs/media/landing.png" alt="Sixpence landing page">
 <img src="docs/media/signin.png" alt="Sign-in page">
 <img src="docs/media/forgot-password.png" alt="Forgot password page">
 <br>
@@ -155,7 +155,7 @@ Pick a range (this month, last month, last 3 or 12 months, year to date, or cust
 
 ## How it's built
 
-FinPulse is plain PHP 8.1+ with no framework, no Composer packages and no build step, backed by SQLite or MySQL.
+Sixpence is plain PHP 8.1+ with no framework, no Composer packages and no build step, backed by SQLite or MySQL.
 
 - **One entry point.** `public/` is the only web-accessible folder. `public/index.php` routes clean URLs like `/expenses` to pages in `app/pages`; application code, the database and scripts all live outside the web root.
 - **Post/Redirect/Get everywhere.** Forms validate, save, flash a message and redirect, so refreshing never resubmits. Failed validation keeps what you typed and shows errors beside each field.
@@ -177,9 +177,9 @@ tests/        run.php, unit and feature tests
 
 ## Security
 
-| Area | What FinPulse does |
+| Area | What Sixpence does |
 | --- | --- |
-| **Content Security Policy** | Scripts, styles, fonts and images may only come from FinPulse itself; framing is blocked. |
+| **Content Security Policy** | Scripts, styles, fonts and images may only come from Sixpence itself; framing is blocked. |
 | **SQL injection** | Every query uses prepared statements; table names come only from fixed allow-lists. |
 | **XSS** | All output is escaped; chart data is embedded as JSON with HTML-significant characters escaped. |
 | **CSRF** | Every form carries a per-session token. Signing out is a POST. |
@@ -196,4 +196,4 @@ Found a security issue? Please report it privately through [GitHub](https://gith
 
 Copyright © 2026 Samonwita Sarker. **All rights reserved.**
 
-This repository is public so the work can be seen, but it is **not** open source. You may not copy, modify, redistribute, host or reuse the code, design or assets without written permission. See [LICENSE](LICENSE) for details. To use FinPulse, visit the [live site](http://finpulse.infinityfree.me/).
+This repository is public so the work can be seen, but it is **not** open source. You may not copy, modify, redistribute, host or reuse the code, design or assets without written permission. See [LICENSE](LICENSE) for details. To use Sixpence, visit the [live site](http://finpulse.infinityfree.me/).

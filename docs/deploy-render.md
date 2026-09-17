@@ -1,6 +1,6 @@
-# FinPulse — Render Deployment Guide
+# Sixpence — Render Deployment Guide
 
-Deploy FinPulse on Render's free tier with Docker and a free external MySQL database.
+Deploy Sixpence on Render's free tier with Docker and a free external MySQL database.
 
 > [!NOTE]
 > **Cost**: Completely free. Render free tier + TiDB Cloud Serverless free tier.
@@ -14,7 +14,7 @@ Deploy FinPulse on Render's free tier with Docker and a free external MySQL data
 ┌────────────────┐           ┌─────────────────────────┐
 │   Render       │   MySQL   │   TiDB Cloud Serverless │
 │   (Docker)     ├──────────►│   (free, 5 GB)          │
-│   FinPulse     │           │   MySQL-compatible      │
+│   Sixpence     │           │   MySQL-compatible      │
 │   free tier    │           └─────────────────────────┘
 └────────────────┘
        ▲
@@ -37,9 +37,9 @@ Render doesn't offer MySQL, so we use **TiDB Cloud Serverless** (MySQL-compatibl
    - **Port** (usually `4000`)
    - **Username** (e.g. `randomstring.root`)
    - **Password** (the one you set or was generated)
-6. Create a database called `finpulse`:
+6. Create a database called `sixpence`:
    - Click **SQL Editor** in TiDB Cloud
-   - Run: `CREATE DATABASE finpulse;`
+   - Run: `CREATE DATABASE sixpence;`
 
 > [!TIP]
 > TiDB requires SSL. Add `?sslmode=required` if you hit connection issues,
@@ -66,7 +66,7 @@ Render doesn't offer MySQL, so we use **TiDB Cloud Serverless** (MySQL-compatibl
 4. Configure:
    | Setting | Value |
    |---|---|
-   | **Name** | `finpulse` |
+   | **Name** | `sixpence` |
    | **Runtime** | Docker |
    | **Plan** | Free |
    | **Branch** | `main` |
@@ -87,7 +87,7 @@ In Render dashboard → your service → **Environment** tab, add:
 | `DB_TYPE` | `mysql` |
 | `DB_HOST` | Your TiDB host (e.g. `gateway01.us-east-1.prod.aws.tidbcloud.com`) |
 | `DB_PORT` | `4000` |
-| `DB_NAME` | `finpulse` |
+| `DB_NAME` | `sixpence` |
 | `DB_USER` | Your TiDB username |
 | `DB_PASS` | Your TiDB password |
 | `MAIL_DRIVER` | `log` |
@@ -102,7 +102,7 @@ In Render dashboard → your service → **Environment** tab, add:
 Once the deploy finishes (2–3 minutes):
 
 1. Visit your Render URL: `https://finpulse-XXXX.onrender.com`
-2. You should see the FinPulse landing page.
+2. You should see the Sixpence landing page.
 3. Create an account and verify everything works.
 
 ---
@@ -116,7 +116,7 @@ Render automatically redeploys whenever you push to `main`. No GitHub Actions ne
 ## Custom Domain (Optional)
 
 1. In Render dashboard → your service → **Settings** → **Custom Domains**.
-2. Add your domain (e.g. `finpulse.yourdomain.com`).
+2. Add your domain (e.g. `sixpence.yourdomain.com`).
 3. Add the CNAME record Render gives you to your DNS provider.
 4. Update `APP_URL` in environment variables to your custom domain.
 5. Render handles HTTPS automatically.

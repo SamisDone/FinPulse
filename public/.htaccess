@@ -1,4 +1,4 @@
-# FinPulse: send every request that isn't a real file to the front controller.
+# Sixpence: send every request that isn't a real file to the front controller.
 
 Options -Indexes -MultiViews
 DirectoryIndex index.php

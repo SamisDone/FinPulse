@@ -1,5 +1,5 @@
 <?php
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 redirect_if_logged_in();
 
@@ -62,5 +62,5 @@ auth_open('Sign in');
   <button class="btn btn-primary btn-lg btn-block" type="submit">Sign in</button>
 </form>
 
-<p class="auth-switch">New to FinPulse? <a class="link" href="<?= e(url('register')) ?>">Create an account</a></p>
+<p class="auth-switch">New to Sixpence? <a class="link" href="<?= e(url('register')) ?>">Create an account</a></p>
 <?php auth_close(); ?>

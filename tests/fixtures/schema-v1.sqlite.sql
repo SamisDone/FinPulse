@@ -1,4 +1,4 @@
--- SQLite-compatible schema for FinPulse
+-- SQLite-compatible schema for Sixpence
 -- Use this for portable deployment (no database server needed)
 
 -- Users table

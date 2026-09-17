@@ -194,7 +194,7 @@ final class TestServer
         }
         $port = free_port();
         self::$url = "http://127.0.0.1:$port";
-        self::$log = getenv('FINPULSE_TEST_DIR') . '/server.log';
+        self::$log = getenv('SIXPENCE_TEST_DIR') . '/server.log';
 
         $env = getenv();
         $env['APP_URL'] = self::$url;

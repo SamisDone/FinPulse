@@ -1,10 +1,10 @@
-# Render Blueprint — deploy FinPulse as a single Docker container.
+# Render Blueprint — deploy Sixpence as a single Docker container.
 # Database is hosted externally (e.g. TiDB Cloud Serverless).
 # https://render.com/docs/blueprint-spec
 
 services:
   - type: web
-    name: finpulse
+    name: sixpence
     runtime: docker
     dockerfilePath: ./Dockerfile
     dockerContext: .

@@ -3,7 +3,7 @@
  * Health check endpoint for Render, Docker, Kubernetes, and uptime monitors.
  * Accessible at /health and /healthz.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-cache, no-store, must-revalidate');

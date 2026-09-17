@@ -15,7 +15,7 @@
 - **Project layout**: `public/` is now the only web-accessible folder, with a single front controller and clean URLs (`/expenses` instead of `expenses.php`; old URLs redirect). Code lives in `app/core`, `app/services` and `app/pages`.
 - **No third-party requests**: fonts and Chart.js are served locally, which allows a strict Content-Security-Policy.
 - SQLite runs in WAL mode so reads and writes don't block each other.
-- **License**: FinPulse is now proprietary (all rights reserved) instead of MIT.
+- **License**: Sixpence is now proprietary (all rights reserved) instead of MIT.
 
 ### Fixed
 - Line breaks in email header values could collapse into double spaces.

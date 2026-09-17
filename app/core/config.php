@@ -2,7 +2,7 @@
 /**
  * Environment loading, session hardening and HTTP security headers.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 /**
  * Minimal .env parser: KEY=value per line, # comments, optional quotes.
@@ -61,7 +61,7 @@ function start_secure_session(): void
     }
     ini_set('session.use_strict_mode', '1');
     ini_set('session.use_only_cookies', '1');
-    session_name('finpulse');
+    session_name('sixpence');
     session_set_cookie_params([
         'lifetime' => 0,
         'path' => base_path() . '/',

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-label="FinPulse — a quiet ledger for income, spending, budgets and goals">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-label="Sixpence — a quiet ledger for income, spending, budgets and goals">
   <style>
     .bg { fill: #f5f3ee; }
     .card { fill: #ffffff; stroke: #e4e0d7; }
@@ -54,7 +54,7 @@
     <rect class="tile" x="72" y="84" width="56" height="56" rx="15"/>
     <path class="tile-line" d="M84 118h10l5-13 8 22 5-13h10" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
     <circle class="in" cx="123" cy="114" r="3.6"/>
-    <text class="ink serif" x="146" y="132" font-size="54" letter-spacing="-1">FinPulse</text>
+    <text class="ink serif" x="146" y="132" font-size="54" letter-spacing="-1">Sixpence</text>
   </g>
   <text class="ink-2 sans fade" style="animation-delay:.35s" x="74" y="190" font-size="22">Know where your money went, and where it's going.</text>
   <text class="ink-3 sans fade" style="animation-delay:.6s" x="74" y="228" font-size="16">Income · Spending · Budgets · Goals · No bank logins · No trackers</text>

@@ -1,6 +1,6 @@
 <?php
 /**
- * FinPulse front controller: the only PHP file inside the web root.
+ * Sixpence front controller: the only PHP file inside the web root.
  */
 
 // With PHP's built-in server, let it serve real files (CSS, JS, fonts) directly.

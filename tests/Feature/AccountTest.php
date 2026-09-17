@@ -85,7 +85,7 @@ test('forgot password emails a link that resets the password and signs out other
 
     $email = latest_email_to($user['email']);
     expect_true($email !== null, 'reset email written to the mail log');
-    expect_contains('Subject: Reset your FinPulse password', $email);
+    expect_contains('Subject: Reset your Sixpence password', $email);
     preg_match('~(/reset-password\?token=[a-f0-9]{64})~', email_text($email), $m);
     expect_true(isset($m[1]), 'email contains the reset link');
 
@@ -104,7 +104,7 @@ test('forgot password emails a link that resets the password and signs out other
     expect_same('/login', $other_device->redirectPath(), 'other session was signed out');
 
     (new HttpClient())->login($user['username'], 'Brand#new1');
-    expect_true(latest_email_to($user['email'], 5, 'Subject: Your FinPulse password was changed') !== null, 'security notice was emailed');
+    expect_true(latest_email_to($user['email'], 5, 'Subject: Your Sixpence password was changed') !== null, 'security notice was emailed');
 });
 
 test('forgot password gives the same answer for unknown emails', function () {

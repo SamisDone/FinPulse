@@ -1,5 +1,5 @@
 <?php
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 redirect_if_logged_in();
 
@@ -34,7 +34,7 @@ auth_open('Reset password');
 <p class="lede">Enter the email on your account and we'll send you a link to choose a new one.</p>
 
 <?php if (!mail_enabled()): ?>
-<div class="alert alert-error auth-alert" role="alert"><?= icon('alert') ?><span>Email is turned off on this server, so reset links can't be sent. Ask whoever runs this FinPulse to reset it for you.</span></div>
+<div class="alert alert-error auth-alert" role="alert"><?= icon('alert') ?><span>Email is turned off on this server, so reset links can't be sent. Ask whoever runs this Sixpence to reset it for you.</span></div>
 <?php endif; ?>
 
 <form class="stack auth-fields" method="post" action="<?= e(url('forgot-password')) ?>" novalidate>

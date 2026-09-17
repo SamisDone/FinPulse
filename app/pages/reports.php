@@ -1,12 +1,12 @@
 <?php
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 $user = require_login();
 $today = today();
 
 [$range, $start, $end] = resolve_report_range(query('range', 'this-month'), query('start'), query('end'), $today);
 $report = build_report($user['id'], $start, $end);
-$file_base = 'finpulse_' . $start . '_to_' . $end;
+$file_base = 'sixpence_' . $start . '_to_' . $end;
 
 /* ---- Exports (before any output) ------------------------------------------ */
 if (query('export') === 'csv') {

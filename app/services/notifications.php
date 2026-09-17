@@ -3,7 +3,7 @@
  * Notifications: in-app messages plus optional email for budget alerts,
  * upcoming recurring payments, a monthly summary, and security notices.
  */
-defined('FINPULSE') || exit;
+defined('SIXPENCE') || exit;
 
 /** Preference key => [label, description]. Every type is on by default. */
 function notification_types(): array
@@ -59,7 +59,7 @@ function notify(array $user, string $type, string $dedupe_key, string $title, st
     }
 
     if ($email && !$silent && notification_prefs($user)['email']) {
-        queue_mail($user['email'], $user['username'], $title, email_template($title, [$body], ['Open FinPulse', app_url() . '/' . ltrim($link, '/')], $email_rows));
+        queue_mail($user['email'], $user['username'], $title, email_template($title, [$body], ['Open Sixpence', app_url() . '/' . ltrim($link, '/')], $email_rows));
     }
     return true;
 }
@@ -184,9 +184,9 @@ function notify_password_changed(int $user_id, string $email, string $username):
         return;
     }
     notify($user, 'security', 'password:' . time() . ':' . bin2hex(random_bytes(3)), 'Your password was changed', 'The password for ' . $username . ' was changed on ' . date('M j, Y \a\t g:i a') . '. Every other device was signed out. If this wasn\'t you, reset your password right away.', 'settings', false);
-    queue_mail($email, $username, 'Your FinPulse password was changed', email_template(
+    queue_mail($email, $username, 'Your Sixpence password was changed', email_template(
         'Your password was changed',
-        ['The password for your FinPulse account ' . $username . ' was just changed, and every other signed-in device was signed out.', 'If you didn\'t do this, reset your password now.'],
+        ['The password for your Sixpence account ' . $username . ' was just changed, and every other signed-in device was signed out.', 'If you didn\'t do this, reset your password now.'],
         ['Reset password', absolute_url('forgot-password')]
     ));
 }

@@ -1,10 +1,10 @@
-/* FinPulse — progressive enhancement. Every page works without this file. */
+/* Sixpence — progressive enhancement. Every page works without this file. */
 (() => {
   'use strict';
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
-  const THEME_KEY = 'finpulse-theme';
+  const THEME_KEY = 'sixpence-theme';
 
   /* ---- Theme: system → light → dark ----------------------------------- */
   const themeLabels = { system: 'Theme: system', light: 'Theme: light', dark: 'Theme: dark' };
@@ -27,7 +27,7 @@
       else localStorage.setItem(THEME_KEY, mode);
     } catch { /* storage unavailable: theme still applies for this page */ }
     syncThemeControls(mode);
-    document.dispatchEvent(new CustomEvent('finpulse:themechange'));
+    document.dispatchEvent(new CustomEvent('sixpence:themechange'));
   }
 
   function syncThemeControls(mode) {
@@ -48,7 +48,7 @@
     applyTheme(order[(order.indexOf(storedTheme()) + 1) % order.length]);
   });
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    document.dispatchEvent(new CustomEvent('finpulse:themechange'));
+    document.dispatchEvent(new CustomEvent('sixpence:themechange'));
   });
 
   /* ---- Mobile navigation drawer ---------------------------------------- */
@@ -88,7 +88,7 @@
     toast.addEventListener('mouseleave', () => { timer = setTimeout(() => dismiss(toast), 2500); });
   }
 
-  window.finpulseToast = (message, type = 'success') => {
+  window.sixpenceToast = (message, type = 'success') => {
     const host = $('[data-toasts]');
     if (!host) return;
     const toast = document.createElement('div');

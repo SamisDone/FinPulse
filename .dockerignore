@@ -4,7 +4,7 @@
 .editorconfig
 docs/
 tests/
-storage/finpulse.db
+storage/sixpence.db
 storage/mail/
 *.md
 LICENSE

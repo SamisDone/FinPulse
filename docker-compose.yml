@@ -4,7 +4,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - finpulse-storage:/var/www/html/storage
+      - sixpence-storage:/var/www/html/storage
     env_file:
       - .env
     environment:
@@ -16,15 +16,15 @@ services:
   #   image: mysql:8.0
   #   environment:
   #     MYSQL_ROOT_PASSWORD: secret
-  #     MYSQL_DATABASE: finpulse
-  #     MYSQL_USER: finpulse
+  #     MYSQL_DATABASE: sixpence
+  #     MYSQL_USER: sixpence
   #     MYSQL_PASSWORD: secret
   #   volumes:
-  #     - finpulse-db:/var/lib/mysql
+  #     - sixpence-db:/var/lib/mysql
   #   ports:
   #     - "3306:3306"
   #   restart: unless-stopped
 
 volumes:
-  finpulse-storage:
-  # finpulse-db:
+  sixpence-storage:
+  # sixpence-db:

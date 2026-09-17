@@ -1,4 +1,4 @@
--- FinPulse schema for SQLite.
+-- Sixpence schema for SQLite.
 -- Applied and upgraded automatically by app/core/db.php. Safe to re-run.
 
 CREATE TABLE IF NOT EXISTS users (
