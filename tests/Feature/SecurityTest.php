@@ -17,7 +17,7 @@ test("users can't see or change each other's data", function () {
     db()->prepare("INSERT INTO financial_goals (user_id, goal_name, target_amount, current_amount) VALUES (?, 'Private goal', 100, 0)")->execute([$owner['id']]);
     $goal = (int) db()->lastInsertId();
     notify($owner, 'test', 'private', 'Private notice', '', 'dashboard', false);
-    $notice = count_rows('SELECT id FROM notifications WHERE user_id = ?', [$owner['id']]);
+    $notice = count_rows('SELECT id FROM notifications WHERE user_id = ? ORDER BY id', [$owner['id']]);
 
     $http = (new HttpClient())->login($intruder['username'], $intruder['password']);
     expect_not_contains('Private rent', $http->get("/expenses?month=all&edit=$expense")->body);

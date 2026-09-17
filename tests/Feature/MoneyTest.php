@@ -63,7 +63,7 @@ test('a recurring expense backfills past dates, shows its schedule, and can be s
     expect_contains('Recurring', $http->body);
     expect_contains('Every month · Next:', $http->body);
 
-    $template = count_rows('SELECT id FROM expenses WHERE user_id = ? AND is_recurring = 1', [$user['id']]);
+    $template = count_rows('SELECT id FROM expenses WHERE user_id = ? AND is_recurring = 1 ORDER BY id', [$user['id']]);
     $http->post('/expenses', ['action' => 'stop_recurring', 'id' => $template, 'return' => '/expenses'])->follow();
     expect_contains('Stopped repeating', $http->body);
     expect_same(0, count_rows('SELECT COUNT(*) FROM expenses WHERE user_id = ? AND is_recurring = 1', [$user['id']]));
@@ -85,7 +85,7 @@ test('budgets reject bad dates and trigger alerts when saved over the limit', fu
 
     $http->get('/notifications');
     expect_contains('is over its limit', $http->body);
-    $notification = count_rows('SELECT id FROM notifications WHERE user_id = ?', [$user['id']]);
+    $notification = count_rows('SELECT id FROM notifications WHERE user_id = ? AND read_at IS NULL ORDER BY id', [$user['id']]);
     $http->get("/notifications?open=$notification");
     expect_same('/budgets', $http->redirectPath());
     expect_same(0, unread_notification_count($user['id']));
@@ -96,7 +96,7 @@ test('savings goals can be created and funded to completion', function () {
     $http = (new HttpClient())->login($user['username'], $user['password']);
     $http->get('/savings')->post('/savings', ['action' => 'goal_save', 'goal_name' => 'Bike', 'target_amount' => '500', 'current_amount' => '100'])->follow();
     expect_contains('Goal added', $http->body);
-    $goal = count_rows('SELECT id FROM financial_goals WHERE user_id = ?', [$user['id']]);
+    $goal = count_rows('SELECT id FROM financial_goals WHERE user_id = ? ORDER BY id', [$user['id']]);
     $http->post('/savings', ['action' => 'goal_contribute', 'id' => $goal, 'amount' => '400'])->follow();
     expect_contains('You reached', $http->body);
     expect_same(1, count_rows("SELECT COUNT(*) FROM financial_goals WHERE id = ? AND status = 'completed'", [$goal]));
