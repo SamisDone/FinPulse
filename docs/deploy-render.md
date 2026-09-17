@@ -54,7 +54,7 @@ Render doesn't offer MySQL, so we use **TiDB Cloud Serverless** (MySQL-compatibl
 1. Push your latest code to GitHub (make sure `render.yaml` and the updated `docker-entrypoint.sh` are committed).
 2. Go to [dashboard.render.com](https://dashboard.render.com/).
 3. Click **New** → **Blueprint**.
-4. Connect your GitHub repo (`SamisDone/FinPulse`).
+4. Connect your GitHub repo (`SamisDone/Sixpence`).
 5. Render will detect `render.yaml` and create the service.
 6. Before deploying, add your environment variables (see Step 3).
 
@@ -62,7 +62,7 @@ Render doesn't offer MySQL, so we use **TiDB Cloud Serverless** (MySQL-compatibl
 
 1. Go to [dashboard.render.com](https://dashboard.render.com/).
 2. Click **New** → **Web Service**.
-3. Connect your GitHub repo (`SamisDone/FinPulse`).
+3. Connect your GitHub repo (`SamisDone/Sixpence`).
 4. Configure:
    | Setting | Value |
    |---|---|
@@ -82,7 +82,7 @@ In Render dashboard → your service → **Environment** tab, add:
 | Key | Value |
 |---|---|
 | `APP_DEBUG` | `false` |
-| `APP_URL` | `https://finpulse-XXXX.onrender.com` (Render gives you this URL after creating the service) |
+| `APP_URL` | `https://sixpence-XXXX.onrender.com` (Render gives you this URL after creating the service) |
 | `APP_TIMEZONE` | `UTC` |
 | `DB_TYPE` | `mysql` |
 | `DB_HOST` | Your TiDB host (e.g. `gateway01.us-east-1.prod.aws.tidbcloud.com`) |
@@ -101,7 +101,7 @@ In Render dashboard → your service → **Environment** tab, add:
 
 Once the deploy finishes (2–3 minutes):
 
-1. Visit your Render URL: `https://finpulse-XXXX.onrender.com`
+1. Visit your Render URL: `https://sixpence-XXXX.onrender.com`
 2. You should see the Sixpence landing page.
 3. Create an account and verify everything works.
 

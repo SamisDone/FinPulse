@@ -3,8 +3,8 @@
 </p>
 
 <p align="center">
-  <a href="http://finpulse.infinityfree.me/"><img alt="Live site" src="https://img.shields.io/badge/live-finpulse.infinityfree.me-0e7a4b?style=flat-square"></a>
-  <a href="https://github.com/SamisDone/FinPulse/actions/workflows/tests.yml"><img alt="Tests" src="https://img.shields.io/github/actions/workflow/status/SamisDone/FinPulse/tests.yml?branch=main&label=tests&style=flat-square"></a>
+  <a href="http://sixpence.infinityfree.me/"><img alt="Live site" src="https://img.shields.io/badge/live-sixpence.infinityfree.me-0e7a4b?style=flat-square"></a>
+  <a href="https://github.com/SamisDone/Sixpence/actions/workflows/tests.yml"><img alt="Tests" src="https://img.shields.io/github/actions/workflow/status/SamisDone/Sixpence/tests.yml?branch=main&label=tests&style=flat-square"></a>
   <img alt="PHP 8.1+" src="https://img.shields.io/badge/PHP-8.1%2B-1c1b18?style=flat-square&logo=php&logoColor=white">
   <img alt="No trackers" src="https://img.shields.io/badge/trackers-0-57544c?style=flat-square">
   <a href="LICENSE"><img alt="All rights reserved" src="https://img.shields.io/badge/license-all%20rights%20reserved-a84a16?style=flat-square"></a>
@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <a href="http://finpulse.infinityfree.me/"><b>Try Sixpence →</b></a>
+  <a href="http://sixpence.infinityfree.me/"><b>Try Sixpence →</b></a>
 </p>
 
 <p align="center">
@@ -196,4 +196,4 @@ Found a security issue? Please report it privately through [GitHub](https://gith
 
 Copyright © 2026 Samonwita Sarker. **All rights reserved.**
 
-This repository is public so the work can be seen, but it is **not** open source. You may not copy, modify, redistribute, host or reuse the code, design or assets without written permission. See [LICENSE](LICENSE) for details. To use Sixpence, visit the [live site](http://finpulse.infinityfree.me/).
+This repository is public so the work can be seen, but it is **not** open source. You may not copy, modify, redistribute, host or reuse the code, design or assets without written permission. See [LICENSE](LICENSE) for details. To use Sixpence, visit the [live site](http://sixpence.infinityfree.me/).
