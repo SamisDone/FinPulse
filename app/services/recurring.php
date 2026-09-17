@@ -93,15 +93,9 @@ function process_recurring(?int $user_id = null, ?string $today = null): array
             }
             $pdo->beginTransaction();
             try {
-                // Lock the row (a no-op write takes SQLite's write lock; MySQL and
-                // Postgres use FOR UPDATE), then re-read it: if another request
-                // already advanced the schedule, skip it.
-                if (db_supports_row_locks()) {
-                    $fresh = $pdo->prepare("SELECT next_recurrence_date, is_recurring FROM $table WHERE id = ? FOR UPDATE");
-                } else {
-                    $pdo->prepare("UPDATE $table SET is_recurring = is_recurring WHERE id = ?")->execute([$row['id']]);
-                    $fresh = $pdo->prepare("SELECT next_recurrence_date, is_recurring FROM $table WHERE id = ?");
-                }
+                // Lock the row, then re-read it: if another request already
+                // advanced the schedule, skip it.
+                $fresh = $pdo->prepare("SELECT next_recurrence_date, is_recurring FROM $table WHERE id = ? FOR UPDATE");
                 $fresh->execute([$row['id']]);
                 $current = $fresh->fetch();
                 if (!$current || (int) $current['is_recurring'] !== 1 || $current['next_recurrence_date'] !== $row['next_recurrence_date']) {

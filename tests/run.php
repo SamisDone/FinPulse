@@ -7,9 +7,9 @@
  *   php tests/run.php feature         # feature (HTTP) tests only
  *   php tests/run.php --filter=reset  # tests whose name contains "reset"
  *
- * Uses a temporary SQLite database by default. For MySQL or PostgreSQL set
- * DB_TYPE=mysql / DB_TYPE=pgsql and point DB_NAME at a database whose name
- * contains "test"; every table in it is dropped first.
+ * Needs a PostgreSQL database whose name contains "test": the public schema is
+ * dropped and recreated before the run. Point DATABASE_URL or the DB_* variables
+ * at it.
  */
 if (PHP_SAPI !== 'cli') {
     exit;
@@ -31,11 +31,9 @@ mkdir($dir . '/mail', 0775, true);
 foreach ([
     'APP_DEBUG' => 'true',
     'APP_TIMEZONE' => 'UTC',
-    'DB_TYPE' => getenv('DB_TYPE') ?: 'sqlite',
     // Blank unless explicitly exported, so a DATABASE_URL sitting in .env can
-    // never point the suite at a real database (every table gets dropped).
+    // never point the suite at a real database (the schema gets dropped).
     'DATABASE_URL' => getenv('DATABASE_URL') ?: '',
-    'DB_PATH' => $dir . '/test.db',
     'MAIL_DRIVER' => 'log',
     'MAIL_LOG_PATH' => $dir . '/mail',
     'SIXPENCE_TEST_DIR' => $dir,
@@ -47,29 +45,26 @@ require dirname(__DIR__) . '/app/core/bootstrap.php';
 ini_set('error_log', $dir . '/php-errors.log');
 require __DIR__ . '/support.php';
 
-if (db_driver() !== 'sqlite') {
-    $name = (string) env('DB_NAME', '');
-    if (!str_contains($name, 'test')) {
-        fwrite(STDERR, "Refusing to run against database \"$name\": its name must contain \"test\" because every table is dropped.
-");
-        exit(2);
+$name = (string) env('DB_NAME', '');
+if (getenv('DATABASE_URL')) {
+    $name = (string) (parse_url(getenv('DATABASE_URL'), PHP_URL_PATH) ?: '');
+    $name = ltrim($name, '/');
+}
+if (!str_contains($name, 'test')) {
+    fwrite(STDERR, "Refusing to run against database \"$name\": its name must contain \"test\" because the schema is dropped.\n");
+    exit(2);
+}
+{
+    [$host, $port, $dbname, $user, $pass, $query] = db_settings();
+    $dsn = sprintf('pgsql:host=%s;port=%s;dbname=%s', $host, $port, $dbname);
+    $sslmode = $query['sslmode'] ?? env('DB_SSLMODE', '');
+    if ($sslmode !== '') {
+        $dsn .= ';sslmode=' . $sslmode;
     }
-    if (db_is_pgsql()) {
-        $pdo = new PDO(
-            sprintf('pgsql:host=%s;port=%s;dbname=%s', env('DB_HOST', '127.0.0.1'), env('DB_PORT', '5432'), $name),
-            env('DB_USER', 'postgres'),
-            env('DB_PASS', '')
-        );
-        // One statement, so the drop order never has to respect foreign keys.
-        $pdo->exec('DROP SCHEMA public CASCADE; CREATE SCHEMA public;');
-    } else {
-        $pdo = new PDO(sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', env('DB_HOST', '127.0.0.1'), env('DB_PORT', '3306'), $name), env('DB_USER', 'root'), env('DB_PASS', ''));
-        $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
-        foreach ($pdo->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN) as $table) {
-            $pdo->exec("DROP TABLE `$table`");
-        }
-        $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
-    }
+    $reset = new PDO($dsn, $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+    // One statement, so the drop order never has to respect foreign keys.
+    $reset->exec('DROP SCHEMA public CASCADE; CREATE SCHEMA public;');
+    $reset = null;
 }
 db();
 
@@ -87,7 +82,7 @@ $passed = 0;
 $failures = [];
 $started = microtime(true);
 $current_suite = null;
-printf("Sixpence %s · PHP %s · %s\n", APP_VERSION, PHP_VERSION, ['sqlite' => 'SQLite', 'mysql' => 'MySQL', 'pgsql' => 'PostgreSQL'][db_driver()]);
+printf("Sixpence %s · PHP %s · %s\n", APP_VERSION, PHP_VERSION, 'PostgreSQL ' . db()->getAttribute(PDO::ATTR_SERVER_VERSION));
 
 foreach (TestRegistry::$tests as $test) {
     if ($filter !== null && stripos($test['name'], $filter) === false) {

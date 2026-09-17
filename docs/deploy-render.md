@@ -130,7 +130,7 @@ Render automatically redeploys whenever you push to `main`. No GitHub Actions ne
 | Limitation | Impact | Workaround |
 |---|---|---|
 | **Spins down after 15 min idle** | First visit after idle takes ~30s | Use [UptimeRobot](https://uptimerobot.com/) (free) to ping it every 14 min |
-| **No persistent disk** | Can't use SQLite (data would be lost) | The managed PostgreSQL database solves this |
+| **No persistent disk** | Uploads and logs vanish on redeploy | All durable state lives in PostgreSQL |
 | **750 free hours/month** | Enough for one service running 24/7 | Only run one free service |
 | **Limited CPU/RAM** | Fine for a personal finance app | Upgrade to Starter ($7/mo) if needed |
 

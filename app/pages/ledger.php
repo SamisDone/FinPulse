@@ -187,7 +187,7 @@ function ledger_page(string $kind): void
         $params[':end'] = $end;
     }
     if ($search !== '') {
-        // "!" as the LIKE escape character behaves the same in SQLite and MySQL; a backslash does not.
+        // "!" as the LIKE escape character avoids the backslash, which Postgres treats specially.
         $like = '%' . str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $search) . '%';
         $where[] = "(t.description LIKE :q1 ESCAPE '!' OR p.name LIKE :q2 ESCAPE '!' OR s.name LIKE :q3 ESCAPE '!')";
         $params += [':q1' => $like, ':q2' => $like, ':q3' => $like];

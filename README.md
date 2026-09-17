@@ -155,14 +155,14 @@ Pick a range (this month, last month, last 3 or 12 months, year to date, or cust
 
 ## How it's built
 
-Sixpence is plain PHP 8.1+ with no framework, no Composer packages and no build step, backed by SQLite, PostgreSQL or MySQL.
+Sixpence is plain PHP 8.1+ with no framework, no Composer packages and no build step, backed by PostgreSQL.
 
 - **One entry point.** `public/` is the only web-accessible folder. `public/index.php` routes clean URLs like `/expenses` to pages in `app/pages`; application code, the database and scripts all live outside the web root.
 - **Post/Redirect/Get everywhere.** Forms validate, save, flash a message and redirect, so refreshing never resubmits. Failed validation keeps what you typed and shows errors beside each field.
 - **Self-contained front end.** One CSS design system with light and dark tokens, a little progressive-enhancement JavaScript, and fonts and Chart.js served locally. Every page works without JavaScript.
 - **Its own PDF engine and mail client.** Reports are drawn as vector PDFs by a small in-house writer; email goes through a built-in SMTP client (STARTTLS/SSL, AUTH) behind a queue, so a slow mail server never slows a page.
-- **Schema migrations** run automatically on SQLite, PostgreSQL and MySQL, and older databases upgrade in place.
-- **Tested.** A dependency-free suite of 65 unit and end-to-end tests covers money handling, recurrence, budgets, notifications, email, PDF output, migrations, and security properties such as CSRF, access control, escaping and rate limits. A GitHub Actions workflow runs it on PHP 8.1 to 8.4 with SQLite, and on MySQL 8 and PostgreSQL 16.
+- **Schema migrations** run automatically on first connect, and older databases upgrade in place.
+- **Tested.** A dependency-free suite of 65 unit and end-to-end tests covers money handling, recurrence, budgets, notifications, email, PDF output, migrations, and security properties such as CSRF, access control, escaping and rate limits. A GitHub Actions workflow runs it on PHP 8.1 to 8.4 against PostgreSQL 16.
 
 ```
 app/
@@ -170,7 +170,7 @@ app/
   services/   finance, recurring, notifications, mail, reports, PDF
   pages/      one file per screen
 public/       index.php and assets (the only folder the web server serves)
-database/     schema.sqlite.sql, schema.pgsql.sql, schema.mysql.sql
+database/     schema.pgsql.sql
 scripts/      cron.php (scheduled upkeep), seed-demo.php (demo data)
 tests/        run.php, unit and feature tests
 ```

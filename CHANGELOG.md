@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- **PostgreSQL is now the only supported database.** SQLite and MySQL/MariaDB support has been removed, along with their schema files. Set `DATABASE_URL` to a `postgres://` connection string, or the individual `DB_*` variables.
+- Deployment uses a managed PostgreSQL instance (`render.yaml` declares one) instead of an external MySQL-compatible service.
+- The test suite now requires a PostgreSQL database whose name contains `test`; it drops and recreates the `public` schema on each run.
+- Renamed from FinPulse to Sixpence.
+
+### Fixed
+- The sidebar user chip no longer overflows the sidebar when an email address is long; every level of the flex/grid chain now caps its intrinsic width.
+- `tests/run.php` no longer inherits `DATABASE_URL` from `.env`, which could point the suite at a live database.
+
 ## 2.1.0 — 2026-09-17
 
 ### Added

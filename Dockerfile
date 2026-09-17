@@ -6,9 +6,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         cron \
         libicu-dev \
         libonig-dev \
-        libsqlite3-dev \
+        libpq-dev \
         libzip-dev \
-    && docker-php-ext-install pdo_mysql pdo_pgsql pdo_sqlite mbstring iconv zip opcache \
+    && docker-php-ext-install pdo_pgsql mbstring iconv zip opcache \
     && rm -rf /var/lib/apt/lists/*
 
 # ── Apache: point the document root at public/ and enable mod_rewrite ─────────
@@ -35,7 +35,7 @@ RUN { \
 # ── Copy the application ──────────────────────────────────────────────────────
 COPY . /var/www/html/
 
-# ── Writable storage (SQLite DB, mail logs, cron lock) ────────────────────────
+# ── Writable storage (mail logs, cron lock) ────────────────────────
 RUN mkdir -p /var/www/html/storage/mail \
     && chown -R www-data:www-data /var/www/html/storage
 

@@ -59,7 +59,7 @@ test('output is escaped everywhere user text appears', function () {
 
 test('code, data and scripts outside public/ cannot be reached over HTTP', function () {
     $http = new HttpClient();
-    foreach (['/app/core/db.php', '/../app/core/db.php', '/database/schema.sqlite.sql', '/scripts/seed-demo.php', '/.env', '/tests/run.php', '/storage/sixpence.db'] as $path) {
+    foreach (['/app/core/db.php', '/../app/core/db.php', '/database/schema.pgsql.sql', '/scripts/seed-demo.php', '/.env', '/tests/run.php', '/storage/cron.lock'] as $path) {
         $http->get($path);
         expect_true(in_array($http->status, [400, 403, 404], true), "$path returned {$http->status}");
         expect_not_contains('CREATE TABLE', $http->body, $path);
