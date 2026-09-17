@@ -194,8 +194,11 @@ function build_report_pdf(array $report, array $user): string
 
 function pdf_brand(PdfDocument $pdf, float $x, float $y): void
 {
+    // "6d" - the pre-decimal notation for sixpence. Drawn as text because the
+    // PDF writer has no arc primitive to curve the bowls with.
     $pdf->rect($x, $y, 20, 20, PDF_INK, null, 0, 5);
-    $pdf->polyline([[$x + 4, $y + 11], [$x + 7.5, $y + 11], [$x + 9.3, $y + 6.3], [$x + 12.2, $y + 14.2], [$x + 14, $y + 9.6], [$x + 17, $y + 9.6]], '#f5f3ee', 1.5);
+    $pdf->setFont(true, 11);
+    $pdf->text($x + 10, $y + 14, '6d', '#f5f3ee', 'center');
     $pdf->setFont(true, 13);
     $pdf->text($x + 28, $y + 14.5, 'Sixpence');
 }

@@ -52,8 +52,8 @@
   <!-- Brand -->
   <g class="fade" style="animation-delay:.05s">
     <rect class="tile" x="72" y="84" width="56" height="56" rx="15"/>
-    <path class="tile-line" d="M84 118h10l5-13 8 22 5-13h10" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle class="in" cx="123" cy="114" r="3.6"/>
+    <g class="tile-line" fill="none" stroke-width="4.2" stroke-linecap="round"><path d="M94.2 102.6C90.4 100.5 86.2 103.3 85.1 108.3"/><circle cx="89.5" cy="114.1" r="6.1"/><circle cx="107.9" cy="116.2" r="6.3"/><path d="M114.2 100.1v16.1"/></g>
+    <circle class="in" cx="114.2" cy="121.5" r="2.7"/>
     <text class="ink serif" x="146" y="132" font-size="54" letter-spacing="-1">Sixpence</text>
   </g>
   <text class="ink-2 sans fade" style="animation-delay:.35s" x="74" y="190" font-size="22">Know where your money went, and where it's going.</text>

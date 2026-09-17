@@ -56,9 +56,15 @@ function icon(string $name, string $class = 'icon'): string
 /** The Sixpence mark: a ledger tile with a pulse line. */
 function brand_mark(string $class = 'brand-mark'): string
 {
+    // "6d" — the pre-decimal notation for sixpence (d for denarius).
     return '<svg class="' . htmlspecialchars($class, ENT_QUOTES) . '" viewBox="0 0 32 32" aria-hidden="true">'
         . '<rect width="32" height="32" rx="8" fill="var(--ink)"/>'
-        . '<path d="M6.5 17h5l2.5-6.5 4 11 2.5-6.5h5" fill="none" stroke="var(--bg)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'
-        . '<circle cx="25.5" cy="15" r="1.9" fill="#3fae84"/>'
+        . '<g fill="none" stroke="var(--bg)" stroke-width="2.4" stroke-linecap="round">'
+        . '<path d="M12.7 10.6C10.5 9.4 8.1 11 7.5 13.9"/>'
+        . '<circle cx="10" cy="17.2" r="3.5"/>'
+        . '<circle cx="20.5" cy="18.4" r="3.6"/>'
+        . '<path d="M24.1 9.2v9.2"/>'
+        . '</g>'
+        . '<circle cx="24.1" cy="21.4" r="1.5" fill="#3fae84"/>'
         . '</svg>';
 }
