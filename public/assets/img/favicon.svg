@@ -1,16 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- "6d" - the pre-decimal notation for sixpence (d for denarius). -->
+  <!-- The x from Sixpence, drawn as an outline of Instrument Serif so the mark
+       renders identically without the font installed. -->
   <style>
     .tile { fill: #1c1b18; }
-    .glyph { stroke: #f5f3ee; }
-    @media (prefers-color-scheme: dark) { .tile { fill: #f0ede6; } .glyph { stroke: #12110f; } }
+    .glyph { fill: #f5f3ee; }
+    @media (prefers-color-scheme: dark) { .tile { fill: #f0ede6; } .glyph { fill: #12110f; } }
   </style>
   <rect class="tile" width="32" height="32" rx="8"/>
-  <g class="glyph" fill="none" stroke-width="2.4" stroke-linecap="round">
-    <path d="M12.7 10.6C10.5 9.4 8.1 11 7.5 13.9"/>
-    <circle cx="10" cy="17.2" r="3.5"/>
-    <circle cx="20.5" cy="18.4" r="3.6"/>
-    <path d="M24.1 9.2v9.2"/>
-  </g>
-  <circle cx="24.1" cy="21.4" r="1.5" fill="#3fae84"/>
+  <path class="glyph" d="M16.97 22.80Q16.60 22.80 16.60 22.53Q16.60 22.27 16.95 22.19L17.35 22.11Q18.15 21.92 17.77 21.23L15.88 17.49Q15.77 17.31 15.63 17.29Q15.48 17.28 15.37 17.49L13.64 20.75Q13.05 21.87 13.83 22.03L14.52 22.19Q14.87 22.27 14.87 22.53Q14.87 22.80 14.49 22.80H11.08Q10.71 22.80 10.71 22.51Q10.71 22.21 11.03 22.13L11.35 22.05Q11.85 21.92 12.20 21.64Q12.55 21.36 13.08 20.37L15.05 16.75Q15.27 16.35 15.11 15.97L12.57 10.99Q12.28 10.37 12.08 10.16Q11.88 9.95 11.61 9.89L11.21 9.81Q10.87 9.73 10.87 9.47Q10.87 9.20 11.24 9.20H15.19Q15.56 9.20 15.56 9.47Q15.56 9.73 15.21 9.81L14.81 9.89Q14.01 10.08 14.39 10.77L16.20 14.29Q16.31 14.48 16.44 14.48Q16.57 14.48 16.68 14.29L18.28 11.25Q18.87 10.13 18.09 9.97L17.40 9.81Q17.05 9.73 17.05 9.47Q17.05 9.20 17.43 9.20H20.84Q21.21 9.20 21.21 9.49Q21.21 9.79 20.89 9.87L20.57 9.95Q20.07 10.05 19.72 10.33Q19.37 10.61 18.84 11.63L17.00 15.04Q16.76 15.44 16.97 15.87L19.59 21.01Q19.91 21.65 20.09 21.85Q20.28 22.05 20.55 22.11L20.95 22.19Q21.29 22.27 21.29 22.53Q21.29 22.80 20.92 22.80Z"/>
 </svg>

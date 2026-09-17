@@ -10,7 +10,7 @@ page_open('Sixpence', [
 <div class="site">
   <header class="site-header">
     <div class="wrap">
-      <a class="brand" href="<?= e(url()) ?>"><?= brand_mark() ?><span>Sixpence</span></a>
+      <a class="brand" href="<?= e(url()) ?>"><?= brand_wordmark() ?></a>
       <nav class="site-nav" aria-label="Primary">
         <a class="text-link hide-sm" href="#features">Features</a>
         <a class="text-link hide-sm" href="#privacy">Privacy</a>
@@ -119,7 +119,7 @@ page_open('Sixpence', [
 
   <footer class="site-footer">
     <div class="wrap">
-      <a class="brand" href="<?= e(url()) ?>"><?= brand_mark() ?><span>Sixpence</span></a>
+      <a class="brand" href="<?= e(url()) ?>"><?= brand_wordmark() ?></a>
       <p>&copy; <?= date('Y') ?> Samonwita Sarker. All rights reserved.</p>
     </div>
   </footer>

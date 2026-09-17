@@ -40,7 +40,6 @@ function icon(string $name, string $class = 'icon'): string
         'server' => '<rect x="4" y="4" width="16" height="7" rx="1.5"/><rect x="4" y="13" width="16" height="7" rx="1.5"/><path d="M8 7.5h.01"/><path d="M8 16.5h.01"/>',
         'file' => '<path d="M14 3.5H7A1.5 1.5 0 0 0 5.5 5v14A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5V8Z"/><path d="M14 3.5V8h4.5"/><path d="M9 13h6"/><path d="M9 16.5h4"/>',
         'wallet' => '<path d="M18.5 7.5V6A1.5 1.5 0 0 0 17 4.5H5.5a2 2 0 0 0 0 4H19a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 19.5H5.5a2 2 0 0 1-2-2v-11"/><path d="M16.5 14h.01"/>',
-        'pulse' => '<path d="M3 12h4l2.5-6 5 12 2.5-6h4"/>',
         'more' => '<circle cx="6" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="12" r="1"/>',
         'trend-up' => '<path d="m4 16 5-5 3.5 3.5L20 7"/><path d="M14.5 7H20v5.5"/>',
         'bell' => '<path d="M6.5 16.5V11a5.5 5.5 0 0 1 11 0v5.5l1.5 2h-14Z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
@@ -53,18 +52,11 @@ function icon(string $name, string $class = 'icon'): string
     return '<svg class="' . htmlspecialchars($class, ENT_QUOTES) . '" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' . $body . '</svg>';
 }
 
-/** The Sixpence mark: a ledger tile with a pulse line. */
-function brand_mark(string $class = 'brand-mark'): string
+/**
+ * The Sixpence wordmark. The identity is typographic: Instrument Serif, already
+ * used for figures and page titles, with the x carrying the accent.
+ */
+function brand_wordmark(): string
 {
-    // "6d" — the pre-decimal notation for sixpence (d for denarius).
-    return '<svg class="' . htmlspecialchars($class, ENT_QUOTES) . '" viewBox="0 0 32 32" aria-hidden="true">'
-        . '<rect width="32" height="32" rx="8" fill="var(--ink)"/>'
-        . '<g fill="none" stroke="var(--bg)" stroke-width="2.4" stroke-linecap="round">'
-        . '<path d="M12.7 10.6C10.5 9.4 8.1 11 7.5 13.9"/>'
-        . '<circle cx="10" cy="17.2" r="3.5"/>'
-        . '<circle cx="20.5" cy="18.4" r="3.6"/>'
-        . '<path d="M24.1 9.2v9.2"/>'
-        . '</g>'
-        . '<circle cx="24.1" cy="21.4" r="1.5" fill="#3fae84"/>'
-        . '</svg>';
+    return '<span class="wordmark">Si<span class="wordmark-x">x</span>pence</span>';
 }

@@ -78,7 +78,7 @@ function app_open(string $title): void
 <div class="shell" data-shell>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
     <div class="spread">
-      <a class="brand" href="<?= e(url('dashboard')) ?>"><?= brand_mark() ?><span>Sixpence</span></a>
+      <a class="brand" href="<?= e(url('dashboard')) ?>"><?= brand_wordmark() ?></a>
       <button class="icon-btn hide-desktop" type="button" data-nav-close aria-label="Close menu"><?= icon('close') ?></button>
     </div>
 
@@ -115,7 +115,7 @@ function app_open(string $title): void
   <div class="shell-main">
     <header class="topbar">
       <button class="icon-btn" type="button" data-nav-open aria-controls="sidebar" aria-expanded="false" aria-label="Open menu"><?= icon('menu') ?></button>
-      <a class="brand" href="<?= e(url('dashboard')) ?>"><?= brand_mark() ?><span>Sixpence</span></a>
+      <a class="brand" href="<?= e(url('dashboard')) ?>"><?= brand_wordmark() ?></a>
       <div class="topbar-actions">
         <a class="icon-btn has-dot<?= $unread ? ' is-on' : '' ?>" href="<?= e(url('notifications')) ?>" aria-label="Notifications<?= $unread ? ", $unread unread" : '' ?>"><?= icon('bell') ?></a>
         <a class="icon-btn" href="<?= e(url('expenses', [], 'add')) ?>" aria-label="Add expense"><?= icon('plus') ?></a>
@@ -154,7 +154,7 @@ function auth_open(string $title): void
     ?>
 <div class="auth">
   <div class="auth-main">
-    <a class="brand" href="<?= e(url()) ?>"><?= brand_mark() ?><span>Sixpence</span></a>
+    <a class="brand" href="<?= e(url()) ?>"><?= brand_wordmark() ?></a>
     <main class="auth-form" id="main" tabindex="-1">
     <?php
 }

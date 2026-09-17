@@ -6,11 +6,9 @@
     .ink-2 { fill: #57544c; }
     .ink-3 { fill: #85817a; }
     .grid { stroke: #ece9e2; }
-    .tile { fill: #1c1b18; }
-    .tile-line { stroke: #f5f3ee; }
     .in { fill: #0e7a4b; }
     .out { fill: #e0873a; }
-    .pulse { stroke: #0e7a4b; }
+    .rule { stroke: #cdc8bc; }
     .track { fill: #eeebe4; }
     @media (prefers-color-scheme: dark) {
       .bg { fill: #12110f; }
@@ -19,31 +17,26 @@
       .ink-2 { fill: #b4afa4; }
       .ink-3 { fill: #807b71; }
       .grid { stroke: #2a2823; }
-      .tile { fill: #f0ede6; }
-      .tile-line { stroke: #12110f; }
       .in { fill: #178a6e; }
       .out { fill: #d27a2c; }
-      .pulse { stroke: #3fae84; }
+      .rule { stroke: #3a3732; }
       .track { fill: #24221e; }
     }
 
     .serif { font-family: "Instrument Serif", Georgia, "Times New Roman", serif; }
     .sans { font-family: "Geist", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
 
-    .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 2.4s cubic-bezier(.22,1,.36,1) .3s forwards, breathe 4s ease-in-out 3s infinite; }
+    .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 2.4s cubic-bezier(.22,1,.36,1) .3s forwards; }
     .rise { transform-box: fill-box; transform-origin: bottom; transform: scaleY(0); animation: rise .9s cubic-bezier(.22,1,.36,1) forwards; }
     .fade { opacity: 0; animation: fade .8s ease-out forwards; }
     .grow { transform-box: fill-box; transform-origin: left; transform: scaleX(0); animation: grow 1.4s cubic-bezier(.22,1,.36,1) 1.1s forwards; }
-    .beat { transform-box: fill-box; transform-origin: center; animation: beat 2s ease-in-out 2.6s infinite; }
 
     @keyframes draw { to { stroke-dashoffset: 0; } }
-    @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
     @keyframes rise { to { transform: scaleY(1); } }
     @keyframes fade { to { opacity: 1; } }
     @keyframes grow { to { transform: scaleX(1); } }
-    @keyframes beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.35); } 30% { transform: scale(1); } }
     @media (prefers-reduced-motion: reduce) {
-      .draw, .rise, .fade, .grow, .beat { animation: none; stroke-dashoffset: 0; transform: none; opacity: 1; }
+      .draw, .rise, .fade, .grow { animation: none; stroke-dashoffset: 0; transform: none; opacity: 1; }
     }
   </style>
 
@@ -51,10 +44,7 @@
 
   <!-- Brand -->
   <g class="fade" style="animation-delay:.05s">
-    <rect class="tile" x="72" y="84" width="56" height="56" rx="15"/>
-    <g class="tile-line" fill="none" stroke-width="4.2" stroke-linecap="round"><path d="M94.2 102.6C90.4 100.5 86.2 103.3 85.1 108.3"/><circle cx="89.5" cy="114.1" r="6.1"/><circle cx="107.9" cy="116.2" r="6.3"/><path d="M114.2 100.1v16.1"/></g>
-    <circle class="in" cx="114.2" cy="121.5" r="2.7"/>
-    <text class="ink serif" x="146" y="132" font-size="54" letter-spacing="-1">Sixpence</text>
+      <text class="ink serif" x="74" y="132" font-size="58" letter-spacing="-1">Si<tspan class="in">x</tspan>pence</text>
   </g>
   <text class="ink-2 sans fade" style="animation-delay:.35s" x="74" y="190" font-size="22">Know where your money went, and where it's going.</text>
   <text class="ink-3 sans fade" style="animation-delay:.6s" x="74" y="228" font-size="16">Income · Spending · Budgets · Goals · No bank logins · No trackers</text>
@@ -90,7 +80,7 @@
   <rect class="track" x="1152" y="80" width="40" height="6" rx="3"/>
   <rect class="in grow" x="1152" y="80" width="28" height="6" rx="3"/>
 
-  <!-- Pulse line across the banner -->
-  <path class="pulse draw" d="M74 272 H430 l14 -30 l22 58 l18 -46 l12 18 H700" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle class="in beat" cx="700" cy="272" r="6"/>
+  <!-- A ruled ledger line -->
+  <path class="rule draw" d="M74 272 H700" fill="none" stroke-width="2" stroke-linecap="round"/>
+  <circle class="in" cx="700" cy="272" r="4"/>
 </svg>
