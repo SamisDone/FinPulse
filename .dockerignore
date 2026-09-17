@@ -1,0 +1,11 @@
+.git
+.github
+.gitattributes
+.editorconfig
+docs/
+tests/
+storage/finpulse.db
+storage/mail/
+*.md
+LICENSE
+.env

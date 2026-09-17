@@ -1,0 +1,30 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:80"
+    volumes:
+      - finpulse-storage:/var/www/html/storage
+    env_file:
+      - .env
+    environment:
+      - APP_URL=http://localhost:8000
+    restart: unless-stopped
+
+  # ── Optional: uncomment to use MySQL instead of SQLite ──────────────────────
+  # db:
+  #   image: mysql:8.0
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: secret
+  #     MYSQL_DATABASE: finpulse
+  #     MYSQL_USER: finpulse
+  #     MYSQL_PASSWORD: secret
+  #   volumes:
+  #     - finpulse-db:/var/lib/mysql
+  #   ports:
+  #     - "3306:3306"
+  #   restart: unless-stopped
+
+volumes:
+  finpulse-storage:
+  # finpulse-db:

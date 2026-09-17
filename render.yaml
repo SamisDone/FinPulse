@@ -1,0 +1,21 @@
+# Render Blueprint — deploy FinPulse as a single Docker container.
+# Database is hosted externally (e.g. TiDB Cloud Serverless).
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: finpulse
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_TIMEZONE
+        value: "UTC"
+      - key: DB_TYPE
+        value: "mysql"
+      # Set these in the Render dashboard (not here) to keep secrets safe:
+      # APP_URL, DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS
+      # MAIL_DRIVER, MAIL_HOST, MAIL_PORT, etc.
