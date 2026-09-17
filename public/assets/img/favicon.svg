@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .tile { fill: #1c1b18; }
+    .pulse { stroke: #f5f3ee; }
+    @media (prefers-color-scheme: dark) { .tile { fill: #f0ede6; } .pulse { stroke: #12110f; } }
+  </style>
+  <rect class="tile" width="32" height="32" rx="8"/>
+  <path class="pulse" d="M6.5 17h5l2.5-6.5 4 11 2.5-6.5h5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="25.5" cy="15" r="2" fill="#3fae84"/>
+</svg>

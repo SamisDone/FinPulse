@@ -1,0 +1,29 @@
+Copyright (c) 2026 Samonwita Sarker. All rights reserved.
+
+FinPulse, including its source code, design, graphics, documentation and
+screenshots (the "Software"), is proprietary and confidential.
+
+No license is granted. Without prior written permission from the copyright
+holder, you may not:
+
+  - copy, reproduce or download the Software, except as needed to view it
+    in a web browser or on the hosting platform where it is published;
+  - modify, adapt, translate or create derivative works based on it;
+  - distribute, publish, sublicense, sell, rent or lend it;
+  - host, deploy or operate it, or offer it as a service to others;
+  - use it, or any part of it, in another project, product or template.
+
+Viewing the source on a public code hosting service does not grant any of
+these rights.
+
+Third-party components included in the Software keep their own licenses:
+  - Chart.js (MIT): public/assets/vendor/LICENSE-Chart.js.md
+  - Geist and Instrument Serif fonts (SIL Open Font License 1.1):
+    public/assets/fonts/LICENSE-Geist.txt, public/assets/fonts/LICENSE-InstrumentSerif.txt
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY ARISING FROM THE SOFTWARE OR ITS USE.
+
+For permission requests, contact the copyright holder through the GitHub
+profile https://github.com/SamisDone.

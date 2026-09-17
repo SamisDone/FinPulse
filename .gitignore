@@ -1,36 +1,27 @@
-# Environment variables
+# Local configuration
 .env
 
-# Database files (SQLite)
+# Databases
 *.db
+*.db-journal
+*.db-wal
+*.db-shm
 *.sqlite
 *.sqlite3
 
-# Uploaded files
-uploads/
-receipts/
-
-# OS files
-Thumbs.db
-Desktop.ini
-.DS_Store
-
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Log files
+# Logs
 *.log
 error_log
 
-# PHP related
-php_error.log
-vendor/
-composer.lock
+# OS & editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
 
-# Node modules (if added later)
-node_modules/
-package-lock.json
+# Dependencies (none are required, but keep tooling output out of git)
+/vendor/
+/node_modules/
