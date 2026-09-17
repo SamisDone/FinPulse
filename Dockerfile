@@ -2,6 +2,7 @@ FROM php:8.3-apache
 
 # ── PHP extensions needed by FinPulse ─────────────────────────────────────────
 RUN apt-get update && apt-get install -y --no-install-recommends \
+        ca-certificates \
         cron \
         libicu-dev \
         libonig-dev \

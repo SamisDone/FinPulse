@@ -20,13 +20,48 @@ function db(): PDO
 
     try {
         if (db_is_mysql()) {
+            $databaseUrl = env('DATABASE_URL');
+            if ($databaseUrl) {
+                $parts = parse_url($databaseUrl);
+                $host = $parts['host'] ?? '127.0.0.1';
+                $port = isset($parts['port']) ? (string) $parts['port'] : '3306';
+                $dbname = !empty($parts['path']) && $parts['path'] !== '/' ? ltrim($parts['path'], '/') : env('DB_NAME', 'finpulse');
+                $user = isset($parts['user']) ? urldecode($parts['user']) : env('DB_USER', 'root');
+                $pass = isset($parts['pass']) ? urldecode($parts['pass']) : env('DB_PASS', '');
+            } else {
+                $host = env('DB_HOST', '127.0.0.1');
+                $port = env('DB_PORT', '3306');
+                $dbname = env('DB_NAME', 'finpulse');
+                $user = env('DB_USER', 'root');
+                $pass = env('DB_PASS', '');
+            }
+
             $dsn = sprintf(
                 'mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
-                env('DB_HOST', '127.0.0.1'),
-                env('DB_PORT', '3306'),
-                env('DB_NAME', 'finpulse')
+                $host,
+                $port,
+                $dbname
             );
-            $pdo = new PDO($dsn, env('DB_USER', 'root'), env('DB_PASS', ''), $options);
+
+            // TiDB Cloud Serverless and remote MySQL providers require SSL/TLS
+            if (env_bool('DB_SSL', false) || str_contains($host, 'tidbcloud.com')) {
+                $caBundles = [
+                    '/etc/ssl/certs/ca-certificates.crt', // Debian / Ubuntu / Docker
+                    '/etc/pki/tls/certs/ca-bundle.crt',   // RHEL / CentOS
+                    '/etc/ssl/cert.pem',                 // macOS / Alpine
+                ];
+                foreach ($caBundles as $bundle) {
+                    if (is_file($bundle)) {
+                        $options[PDO::MYSQL_ATTR_SSL_CA] = $bundle;
+                        break;
+                    }
+                }
+                if (env('DB_SSL_VERIFY') === 'false') {
+                    $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+                }
+            }
+
+            $pdo = new PDO($dsn, $user, $pass, $options);
         } else {
             $path = sqlite_path();
             if (!is_dir(dirname($path))) {
@@ -52,6 +87,10 @@ function db(): PDO
 
 function db_is_mysql(): bool
 {
+    $dbUrl = env('DATABASE_URL');
+    if ($dbUrl && (str_starts_with($dbUrl, 'mysql://') || str_starts_with($dbUrl, 'mysql:'))) {
+        return true;
+    }
     return strtolower((string) env('DB_TYPE', 'sqlite')) === 'mysql';
 }
 
