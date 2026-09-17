@@ -31,6 +31,9 @@ foreach ([
     'APP_DEBUG' => 'true',
     'APP_TIMEZONE' => 'UTC',
     'DB_TYPE' => getenv('DB_TYPE') ?: 'sqlite',
+    // Blank unless explicitly exported, so a DATABASE_URL sitting in .env can
+    // never point the suite at a real database (every table gets dropped).
+    'DATABASE_URL' => getenv('DATABASE_URL') ?: '',
     'DB_PATH' => $dir . '/test.db',
     'MAIL_DRIVER' => 'log',
     'MAIL_LOG_PATH' => $dir . '/mail',
