@@ -53,3 +53,33 @@ jobs:
           DB_NAME: sixpence_test
           DB_USER: root
           DB_PASS: root
+
+  postgres:
+    name: PHP 8.3 · PostgreSQL 16
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: sixpence_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_pgsql, mbstring, iconv, zlib, openssl
+          coverage: none
+      - name: Test
+        run: php tests/run.php
+        env:
+          DB_TYPE: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_NAME: sixpence_test
+          DB_USER: postgres
+          DB_PASS: postgres

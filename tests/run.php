@@ -7,8 +7,9 @@
  *   php tests/run.php feature         # feature (HTTP) tests only
  *   php tests/run.php --filter=reset  # tests whose name contains "reset"
  *
- * Uses a temporary SQLite database by default. For MySQL set DB_TYPE=mysql and point DB_NAME
- * at a database whose name contains "test"; every table in it is dropped first.
+ * Uses a temporary SQLite database by default. For MySQL or PostgreSQL set
+ * DB_TYPE=mysql / DB_TYPE=pgsql and point DB_NAME at a database whose name
+ * contains "test"; every table in it is dropped first.
  */
 if (PHP_SAPI !== 'cli') {
     exit;
@@ -46,18 +47,29 @@ require dirname(__DIR__) . '/app/core/bootstrap.php';
 ini_set('error_log', $dir . '/php-errors.log');
 require __DIR__ . '/support.php';
 
-if (db_is_mysql()) {
+if (db_driver() !== 'sqlite') {
     $name = (string) env('DB_NAME', '');
     if (!str_contains($name, 'test')) {
-        fwrite(STDERR, "Refusing to run against MySQL database \"$name\": its name must contain \"test\" because every table is dropped.\n");
+        fwrite(STDERR, "Refusing to run against database \"$name\": its name must contain \"test\" because every table is dropped.
+");
         exit(2);
     }
-    $pdo = new PDO(sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', env('DB_HOST', '127.0.0.1'), env('DB_PORT', '3306'), $name), env('DB_USER', 'root'), env('DB_PASS', ''));
-    $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
-    foreach ($pdo->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN) as $table) {
-        $pdo->exec("DROP TABLE `$table`");
+    if (db_is_pgsql()) {
+        $pdo = new PDO(
+            sprintf('pgsql:host=%s;port=%s;dbname=%s', env('DB_HOST', '127.0.0.1'), env('DB_PORT', '5432'), $name),
+            env('DB_USER', 'postgres'),
+            env('DB_PASS', '')
+        );
+        // One statement, so the drop order never has to respect foreign keys.
+        $pdo->exec('DROP SCHEMA public CASCADE; CREATE SCHEMA public;');
+    } else {
+        $pdo = new PDO(sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', env('DB_HOST', '127.0.0.1'), env('DB_PORT', '3306'), $name), env('DB_USER', 'root'), env('DB_PASS', ''));
+        $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
+        foreach ($pdo->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN) as $table) {
+            $pdo->exec("DROP TABLE `$table`");
+        }
+        $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
     }
-    $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
 }
 db();
 
@@ -75,7 +87,7 @@ $passed = 0;
 $failures = [];
 $started = microtime(true);
 $current_suite = null;
-printf("Sixpence %s · PHP %s · %s\n", APP_VERSION, PHP_VERSION, db_is_mysql() ? 'MySQL' : 'SQLite');
+printf("Sixpence %s · PHP %s · %s\n", APP_VERSION, PHP_VERSION, ['sqlite' => 'SQLite', 'mysql' => 'MySQL', 'pgsql' => 'PostgreSQL'][db_driver()]);
 
 foreach (TestRegistry::$tests as $test) {
     if ($filter !== null && stripos($test['name'], $filter) === false) {

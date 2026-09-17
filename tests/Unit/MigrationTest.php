@@ -1,7 +1,7 @@
 <?php
 
 test('a 1.x SQLite database upgrades to the current schema without losing data', function () {
-    if (db_is_mysql()) {
+    if (db_driver() !== 'sqlite') {
         return; // The fixture is the original SQLite schema.
     }
     $file = getenv('SIXPENCE_TEST_DIR') . '/legacy-' . bin2hex(random_bytes(3)) . '.db';
@@ -20,11 +20,11 @@ test('a 1.x SQLite database upgrades to the current schema without losing data',
 
     expect_same(SCHEMA_VERSION, (int) $pdo->query('PRAGMA user_version')->fetchColumn());
     foreach (['currency', 'notification_preferences', 'session_epoch'] as $column) {
-        expect_true(in_array($column, column_names($pdo, 'users', false), true), "users.$column");
+        expect_true(in_array($column, column_names($pdo, 'users'), true), "users.$column");
     }
-    expect_true(in_array('recurring_source_id', column_names($pdo, 'expenses', false), true));
+    expect_true(in_array('recurring_source_id', column_names($pdo, 'expenses'), true));
     foreach (['login_attempts', 'password_resets', 'notifications', 'mail_queue'] as $table) {
-        expect_true(table_exists($pdo, $table, false), "table $table");
+        expect_true(table_exists($pdo, $table), "table $table");
     }
     expect_same('Lunch', $pdo->query('SELECT description FROM expenses')->fetchColumn());
     expect_same('USD', $pdo->query('SELECT currency FROM users')->fetchColumn());
@@ -32,5 +32,5 @@ test('a 1.x SQLite database upgrades to the current schema without losing data',
 });
 
 test('the live test database is at the current schema version', function () {
-    expect_same(SCHEMA_VERSION, schema_version(db(), db_is_mysql()));
+    expect_same(SCHEMA_VERSION, schema_version(db()));
 });

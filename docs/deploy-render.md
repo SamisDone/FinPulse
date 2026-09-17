@@ -1,21 +1,24 @@
 # Sixpence — Render Deployment Guide
 
-Deploy Sixpence on Render's free tier with Docker and a free external MySQL database.
+Deploy Sixpence on Render's free tier with Docker and a managed PostgreSQL database.
 
 > [!NOTE]
-> **Cost**: Completely free. Render free tier + TiDB Cloud Serverless free tier.
-> The trade-off: the app spins down after 15 min of inactivity (cold starts take ~30s).
+> **Cost**: Free, with two trade-offs. The app spins down after 15 min of inactivity
+> (cold starts take ~30s), and **Render's free PostgreSQL expires 30 days after
+> creation**, with a 14-day grace period before the data is deleted. For anything
+> you intend to keep, either upgrade the database to a paid plan or use a provider
+> whose free tier does not expire — see Step 1.
 
 ---
 
 ## Architecture
 
 ```
-┌────────────────┐           ┌─────────────────────────┐
-│   Render       │   MySQL   │   TiDB Cloud Serverless │
-│   (Docker)     ├──────────►│   (free, 5 GB)          │
-│   Sixpence     │           │   MySQL-compatible      │
-│   free tier    │           └─────────────────────────┘
+┌────────────────┐            ┌─────────────────────────┐
+│   Render       │ PostgreSQL │   Render PostgreSQL     │
+│   (Docker)     ├───────────►│   (free: 1 GB, expires  │
+│   Sixpence     │            │    after 30 days)       │
+│   free tier    │            └─────────────────────────┘
 └────────────────┘
        ▲
     Internet
@@ -24,26 +27,26 @@ Deploy Sixpence on Render's free tier with Docker and a free external MySQL data
 
 ---
 
-## Step 1 — Set Up a Free MySQL Database
+## Step 1 — Choose a PostgreSQL Database
 
-Render doesn't offer MySQL, so we use **TiDB Cloud Serverless** (MySQL-compatible, 5 GB free, no expiry).
+**Option A — Render PostgreSQL (simplest).** `render.yaml` already declares it, so
+the Blueprint in Step 2 creates it for you and injects `DATABASE_URL` automatically.
+Nothing to do here. Note the 30-day expiry above before you rely on it.
 
-1. Go to [tidbcloud.com](https://tidbcloud.com/) and sign up (GitHub login works).
-2. Click **Create Cluster** → choose **Serverless** (free).
-3. Pick a region close to your Render service (e.g. US East).
-4. Once created, click **Connect** → choose **General** connection method.
-5. Note down these values:
-   - **Host** (e.g. `gateway01.us-east-1.prod.aws.tidbcloud.com`)
-   - **Port** (usually `4000`)
-   - **Username** (e.g. `randomstring.root`)
-   - **Password** (the one you set or was generated)
-6. Create a database called `sixpence`:
-   - Click **SQL Editor** in TiDB Cloud
-   - Run: `CREATE DATABASE sixpence;`
+**Option B — a free tier that does not expire.** Recommended if this holds data you
+care about. Both of these give you a `postgres://` connection string to paste into
+`DATABASE_URL` as a normal environment variable:
+
+- [Neon](https://neon.tech) — free Postgres, no expiry
+- [Supabase](https://supabase.com) — free Postgres, no expiry
+
+If you pick Option B, delete the `databases:` block from `render.yaml` and set
+`DATABASE_URL` in the Render dashboard instead.
 
 > [!TIP]
-> TiDB requires SSL. Add `?sslmode=required` if you hit connection issues,
-> but the default PHP MySQL driver should handle it automatically.
+> The scheme in `DATABASE_URL` selects the driver, so `postgres://...` is all the
+> app needs — `DB_TYPE` can be left unset. Any host other than `localhost` defaults
+> to `sslmode=require`, which is what managed providers expect.
 
 ---
 
@@ -55,7 +58,7 @@ Render doesn't offer MySQL, so we use **TiDB Cloud Serverless** (MySQL-compatibl
 2. Go to [dashboard.render.com](https://dashboard.render.com/).
 3. Click **New** → **Blueprint**.
 4. Connect your GitHub repo (`SamisDone/Sixpence`).
-5. Render will detect `render.yaml` and create the service.
+5. Render will detect `render.yaml` and create both the service and the database.
 6. Before deploying, add your environment variables (see Step 3).
 
 ### Option B: Manual setup
@@ -84,13 +87,12 @@ In Render dashboard → your service → **Environment** tab, add:
 | `APP_DEBUG` | `false` |
 | `APP_URL` | `https://sixpence-XXXX.onrender.com` (Render gives you this URL after creating the service) |
 | `APP_TIMEZONE` | `UTC` |
-| `DB_TYPE` | `mysql` |
-| `DB_HOST` | Your TiDB host (e.g. `gateway01.us-east-1.prod.aws.tidbcloud.com`) |
-| `DB_PORT` | `4000` |
-| `DB_NAME` | `sixpence` |
-| `DB_USER` | Your TiDB username |
-| `DB_PASS` | Your TiDB password |
+| `DATABASE_URL` | Set automatically by the Blueprint (Option A). For Option B, paste the `postgres://...` string from Neon or Supabase |
 | `MAIL_DRIVER` | `log` |
+
+Individual `DB_HOST` / `DB_PORT` / `DB_NAME` / `DB_USER` / `DB_PASS` variables still
+work if you prefer them, with `DB_TYPE` set to `pgsql` — but `DATABASE_URL` overrides
+them all when present.
 
 > [!IMPORTANT]
 > Update `APP_URL` with the actual `.onrender.com` URL after your first deploy.
@@ -128,7 +130,7 @@ Render automatically redeploys whenever you push to `main`. No GitHub Actions ne
 | Limitation | Impact | Workaround |
 |---|---|---|
 | **Spins down after 15 min idle** | First visit after idle takes ~30s | Use [UptimeRobot](https://uptimerobot.com/) (free) to ping it every 14 min |
-| **No persistent disk** | Can't use SQLite (data would be lost) | External MySQL (TiDB) solves this |
+| **No persistent disk** | Can't use SQLite (data would be lost) | The managed PostgreSQL database solves this |
 | **750 free hours/month** | Enough for one service running 24/7 | Only run one free service |
 | **Limited CPU/RAM** | Fine for a personal finance app | Upgrade to Starter ($7/mo) if needed |
 
@@ -142,6 +144,6 @@ Render automatically redeploys whenever you push to `main`. No GitHub Actions ne
 ## Useful Links
 
 - [Render Dashboard](https://dashboard.render.com/)
-- [TiDB Cloud Console](https://tidbcloud.com/)
+- [Render PostgreSQL docs](https://render.com/docs/postgresql)
 - [Render Docker Docs](https://render.com/docs/docker)
 - [UptimeRobot](https://uptimerobot.com/) (free ping service)

@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libonig-dev \
         libsqlite3-dev \
         libzip-dev \
-    && docker-php-ext-install pdo_mysql pdo_sqlite mbstring iconv zip opcache \
+    && docker-php-ext-install pdo_mysql pdo_pgsql pdo_sqlite mbstring iconv zip opcache \
     && rm -rf /var/lib/apt/lists/*
 
 # ── Apache: point the document root at public/ and enable mod_rewrite ─────────
