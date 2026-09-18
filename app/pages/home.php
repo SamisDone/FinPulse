@@ -61,8 +61,8 @@ page_open('Sixpence', [
 
     <section class="band" id="features">
       <div class="wrap band-head">
-        <h2>Everything a monthly money check-in needs.</h2>
-        <div class="feature-list">
+        <h2 data-reveal>Everything a monthly money check-in needs.</h2>
+        <div class="feature-list" data-reveal-group>
           <article class="feature">
             <span class="glyph"><?= icon('expense') ?></span>
             <div>
@@ -97,8 +97,8 @@ page_open('Sixpence', [
 
     <section class="band" id="privacy">
       <div class="wrap band-head">
-        <h2>Private by design.</h2>
-        <div class="facts">
+        <h2 data-reveal>Private by design.</h2>
+        <div class="facts" data-reveal>
           <div class="fact"><strong>No bank connections</strong><p>You enter what matters. No credentials to leak, no aggregator reading your statements.</p></div>
           <div class="fact"><strong>Your data, exportable</strong><p>Download every entry as a spreadsheet, or any report as a PDF, whenever you like.</p></div>
           <div class="fact"><strong>No trackers</strong><p>No analytics, no ads, no third-party cookies. Even the fonts and charts load from Sixpence itself.</p></div>
@@ -109,7 +109,7 @@ page_open('Sixpence', [
 
     <section class="closing">
       <div class="wrap">
-        <div class="closing-card">
+        <div class="closing-card" data-reveal-group>
           <h2>Your first month takes about ten minutes to set up.</h2>
           <a class="btn btn-lg" href="<?= e(url('register')) ?>">Create your account <?= icon('arrow-right') ?></a>
         </div>

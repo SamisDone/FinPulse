@@ -223,6 +223,24 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
+  /* ---- Scroll reveal: raise sections into place once, the first time ----- */
+  function wireScrollReveal() {
+    const targets = $$('[data-reveal], [data-reveal-group]');
+    if (!targets.length) return;
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach((el) => el.classList.add('is-in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-in');
+        io.unobserve(entry.target); // once only: scrolling back up doesn't replay it
+      });
+    }, { rootMargin: '0px 0px -10%' });
+    targets.forEach((el) => io.observe(el));
+  }
+
   /* Prevent double submits: disable the clicked button once the form is sent. */
   document.addEventListener('submit', (event) => {
     const form = event.target;
@@ -237,6 +255,7 @@
     wirePasswordRules();
     wireBudgetPeriods();
     wireHeaderShadow();
+    wireScrollReveal();
   });
 
   /* Jump straight into the amount field when arriving at #add (after the browser's own fragment scroll). */

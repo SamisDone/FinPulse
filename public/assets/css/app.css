@@ -436,9 +436,10 @@ code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-si
   display: inline-grid; place-items: center;
   width: 32px; height: 32px; border-radius: 7px; border: 0;
   background: transparent; color: var(--ink-3); cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
+  transition: background-color 0.15s, color 0.15s, transform 0.1s var(--ease-out);
 }
 .icon-btn:hover { background: var(--sunken); color: var(--ink); }
+.icon-btn:active { transform: scale(0.94); }
 .icon-btn.danger:hover { background: var(--danger-soft); color: var(--danger); }
 
 /* ---- Forms -------------------------------------------------------------- */
@@ -910,8 +911,11 @@ details.more[open] summary { margin-bottom: 12px; }
 .hero-note { margin-top: 18px; font-size: 13px; color: var(--ink-3); display: flex; align-items: center; gap: 8px; }
 @media (max-width: 960px) { .hero { padding: 48px 0 24px; } .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 40px; } }
 
-.hero > .wrap > * , .hero-visual { animation: rise 0.7s var(--ease-out) both; }
-.hero-visual { animation-delay: 0.12s; }
+.hero h1, .hero .lede, .hero-cta, .hero-note, .hero-visual { animation: rise 0.55s var(--ease-out) both; }
+.hero .lede { animation-delay: 60ms; }
+.hero-visual { animation-delay: 140ms; }
+.hero-cta { animation-delay: 120ms; }
+.hero-note { animation-delay: 180ms; }
 
 .statement {
   position: relative;
@@ -987,4 +991,73 @@ details.more[open] summary { margin-bottom: 12px; }
   body { background: #fff; }
   .panel { box-shadow: none; break-inside: avoid; }
   .page { padding: 0; max-width: none; }
+}
+
+/* ---- Motion ------------------------------------------------------------- */
+/* Two additions, both deliberately short. The blanket prefers-reduced-motion
+   rule near the top of this file already flattens everything below; view
+   transitions run on pseudo-elements that rule can't reach, so they're turned
+   off explicitly. */
+
+/* Page-to-page crossfade. The browser does the work: the chrome is named so it
+   holds still while the content under it changes, instead of dissolving with
+   the rest of the page. Browsers without support navigate exactly as before. */
+@view-transition { navigation: auto; }
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.18s;
+  animation-timing-function: var(--ease-out);
+}
+
+.sidebar { view-transition-name: sidebar; }
+.topbar { view-transition-name: topbar; }
+.site-header { view-transition-name: site-header; }
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+  /* Belt and braces: a browser that ignores @view-transition inside a media
+     query still lands on the new page with no movement. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}
+
+/* Scroll reveal, used on the landing page. Content is only hidden when there is
+   scripting to reveal it: theme.js sets data-js before the first paint, so with
+   JS off nothing is ever hidden and with JS on nothing ever flashes.
+   [data-reveal] raises the element itself, [data-reveal-group] its children. */
+[data-js] [data-reveal],
+[data-js] [data-reveal-group] > * {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+[data-js] [data-reveal].is-in,
+[data-js] [data-reveal-group].is-in > * {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+  transition-delay: var(--stagger, 0ms);
+}
+
+[data-reveal-group] > :nth-child(2) { --stagger: 60ms; }
+[data-reveal-group] > :nth-child(3) { --stagger: 120ms; }
+[data-reveal-group] > :nth-child(4) { --stagger: 180ms; }
+[data-reveal-group] > :nth-child(n+5) { --stagger: 240ms; }
+
+@media print {
+  [data-js] [data-reveal],
+  [data-js] [data-reveal-group] > * { opacity: 1 !important; transform: none !important; }
+}
+
+/* Pointer-only polish: touch devices fire a false hover on tap. */
+@media (hover: hover) and (pointer: fine) {
+  .feature .glyph { transition: transform 0.18s var(--ease-out), border-color 0.18s, color 0.18s; }
+  .feature:hover .glyph { transform: translateY(-2px); border-color: var(--line-strong); }
+
+  .hero-cta .btn .icon,
+  .closing-card .btn .icon { transition: transform 0.18s var(--ease-out); }
+  .hero-cta .btn:hover .icon,
+  .closing-card .btn:hover .icon { transform: translateX(3px); }
 }
