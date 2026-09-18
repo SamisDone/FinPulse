@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="http://sixpence.infinityfree.me/"><img alt="Live site" src="https://img.shields.io/badge/live-sixpence.infinityfree.me-0e7a4b?style=flat-square"></a>
+  <a href="https://sixpence.onrender.com/"><img alt="Live site" src="https://img.shields.io/badge/live-sixpence.onrender.com-0e7a4b?style=flat-square"></a>
   <a href="https://github.com/SamisDone/Sixpence/actions/workflows/tests.yml"><img alt="Tests" src="https://img.shields.io/github/actions/workflow/status/SamisDone/Sixpence/tests.yml?branch=main&label=tests&style=flat-square"></a>
   <img alt="PHP 8.1+" src="https://img.shields.io/badge/PHP-8.1%2B-1c1b18?style=flat-square&logo=php&logoColor=white">
   <img alt="No trackers" src="https://img.shields.io/badge/trackers-0-57544c?style=flat-square">
@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <a href="http://sixpence.infinityfree.me/"><b>Try Sixpence →</b></a>
+  <a href="https://sixpence.onrender.com/"><b>Try Sixpence →</b></a>
 </p>
 
 <p align="center">
@@ -159,7 +159,7 @@ Sixpence is plain PHP 8.1+ with no framework, no Composer packages and no build 
 
 - **One entry point.** `public/` is the only web-accessible folder. `public/index.php` routes clean URLs like `/expenses` to pages in `app/pages`; application code, the database and scripts all live outside the web root.
 - **Post/Redirect/Get everywhere.** Forms validate, save, flash a message and redirect, so refreshing never resubmits. Failed validation keeps what you typed and shows errors beside each field.
-- **Self-contained front end.** One CSS design system with light and dark tokens, a little progressive-enhancement JavaScript, and fonts and Chart.js served locally. Every page works without JavaScript.
+- **Self-contained front end.** One CSS design system with light and dark tokens, a little progressive-enhancement JavaScript, and fonts and Chart.js served locally. Every page works without JavaScript. Motion is kept short and purposeful — a page-to-page crossfade, sections that rise into place on the landing page — and stands down entirely for *prefers-reduced-motion*.
 - **Its own PDF engine and mail client.** Reports are drawn as vector PDFs by a small in-house writer; email goes through a built-in SMTP client (STARTTLS/SSL, AUTH) behind a queue, so a slow mail server never slows a page.
 - **Schema migrations** run automatically on first connect, and older databases upgrade in place.
 - **Tested.** A dependency-free suite of 65 unit and end-to-end tests covers money handling, recurrence, budgets, notifications, email, PDF output, migrations, and security properties such as CSRF, access control, escaping and rate limits. A GitHub Actions workflow runs it on PHP 8.1 to 8.4 against PostgreSQL 16.
@@ -196,4 +196,4 @@ Found a security issue? Please report it privately through [GitHub](https://gith
 
 Copyright © 2026 Samonwita Sarker. **All rights reserved.**
 
-This repository is public so the work can be seen, but it is **not** open source. You may not copy, modify, redistribute, host or reuse the code, design or assets without written permission. See [LICENSE](LICENSE) for details. To use Sixpence, visit the [live site](http://sixpence.infinityfree.me/).
+This repository is public so the work can be seen, but it is **not** open source. You may not copy, modify, redistribute, host or reuse the code, design or assets without written permission. See [LICENSE](LICENSE) for details. To use Sixpence, visit the [live site](https://sixpence.onrender.com/).
