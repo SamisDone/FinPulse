@@ -1,15 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-label="Sixpence — a quiet ledger for income, spending, budgets and goals">
+  <!--
+    Every element carries an explicit presentation attribute for the light theme,
+    so the banner still renders where a host strips <style> (GitHub sanitises SVG
+    in Markdown). The stylesheet is progressive enhancement only: dark mode and
+    motion. CSS rules outrank presentation attributes, so the dark overrides win
+    wherever the stylesheet survives.
+  -->
   <style>
-    .bg { fill: #f5f3ee; }
-    .card { fill: #ffffff; stroke: #e4e0d7; }
-    .ink { fill: #1c1b18; }
-    .ink-2 { fill: #57544c; }
-    .ink-3 { fill: #85817a; }
-    .grid { stroke: #ece9e2; }
-    .in { fill: #0e7a4b; }
-    .out { fill: #e0873a; }
-    .rule { stroke: #cdc8bc; }
-    .track { fill: #eeebe4; }
     @media (prefers-color-scheme: dark) {
       .bg { fill: #12110f; }
       .card { fill: #1b1a17; stroke: #2d2b26; }
@@ -17,14 +14,11 @@
       .ink-2 { fill: #b4afa4; }
       .ink-3 { fill: #807b71; }
       .grid { stroke: #2a2823; }
-      .in { fill: #178a6e; }
+      .accent { fill: #3fae84; }
       .out { fill: #d27a2c; }
       .rule { stroke: #3a3732; }
       .track { fill: #24221e; }
     }
-
-    .serif { font-family: "Instrument Serif", Georgia, "Times New Roman", serif; }
-    .sans { font-family: "Geist", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
 
     .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 2.4s cubic-bezier(.22,1,.36,1) .3s forwards; }
     .rise { transform-box: fill-box; transform-origin: bottom; transform: scaleY(0); animation: rise .9s cubic-bezier(.22,1,.36,1) forwards; }
@@ -35,52 +29,58 @@
     @keyframes rise { to { transform: scaleY(1); } }
     @keyframes fade { to { opacity: 1; } }
     @keyframes grow { to { transform: scaleX(1); } }
+
     @media (prefers-reduced-motion: reduce) {
       .draw, .rise, .fade, .grow { animation: none; stroke-dashoffset: 0; transform: none; opacity: 1; }
     }
   </style>
 
-  <rect class="bg" width="1280" height="320" rx="20"/>
+  <rect class="bg" fill="#f5f3ee" width="1280" height="320" rx="20"/>
 
-  <!-- Brand -->
-  <g class="fade" style="animation-delay:.05s">
-      <text class="ink serif" x="74" y="132" font-size="58" letter-spacing="-1">Si<tspan class="in">x</tspan>pence</text>
-  </g>
-  <text class="ink-2 sans fade" style="animation-delay:.35s" x="74" y="190" font-size="22">Know where your money went, and where it's going.</text>
-  <text class="ink-3 sans fade" style="animation-delay:.6s" x="74" y="228" font-size="16">Income · Spending · Budgets · Goals · No bank logins · No trackers</text>
+  <!-- Wordmark -->
+  <text class="ink fade" fill="#1c1b18" style="animation-delay:.05s" x="74" y="132" font-size="58" letter-spacing="-1"
+        font-family="Instrument Serif, Georgia, 'Times New Roman', serif">Si<tspan class="accent" fill="#0e7a4b">x</tspan>pence</text>
 
-  <!-- Mini chart card -->
+  <text class="ink-2 fade" fill="#57544c" style="animation-delay:.35s" x="74" y="190" font-size="22"
+        font-family="Geist, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">Know where your money went, and where it's going.</text>
+  <text class="ink-3 fade" fill="#85817a" style="animation-delay:.6s" x="74" y="228" font-size="16"
+        font-family="Geist, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">Income · Spending · Budgets · Goals · No bank logins · No trackers</text>
+
+  <!-- A ruled ledger line -->
+  <path class="rule draw" stroke="#cdc8bc" d="M74 272 H700" fill="none" stroke-width="2" stroke-linecap="round"/>
+  <circle class="accent" fill="#0e7a4b" cx="700" cy="272" r="4"/>
+
+  <!-- Spending-pace card -->
   <g class="fade" style="animation-delay:.2s">
-    <rect class="card" x="760" y="44" width="456" height="232" rx="16" stroke-width="1"/>
-    <text class="ink-3 sans" x="788" y="80" font-size="13">Spending pace · September</text>
-    <text class="ink serif" x="788" y="118" font-size="34">$1,871.71</text>
-    <text class="ink-3 sans" x="930" y="117" font-size="13">left over</text>
-    <line class="grid" x1="788" y1="236" x2="1188" y2="236" stroke-width="1"/>
-    <line class="grid" x1="788" y1="196" x2="1188" y2="196" stroke-width="1"/>
-    <line class="grid" x1="788" y1="156" x2="1188" y2="156" stroke-width="1"/>
+    <rect class="card" fill="#ffffff" stroke="#e4e0d7" x="760" y="44" width="456" height="232" rx="16" stroke-width="1"/>
+    <text class="ink-3" fill="#85817a" x="788" y="80" font-size="13"
+          font-family="Geist, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">Spending pace · September</text>
+    <text class="ink" fill="#1c1b18" x="788" y="118" font-size="34"
+          font-family="Instrument Serif, Georgia, 'Times New Roman', serif">$1,871.71</text>
+    <text class="ink-3" fill="#85817a" x="930" y="117" font-size="13"
+          font-family="Geist, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">left over</text>
+    <line class="grid" stroke="#ece9e2" x1="788" y1="236" x2="1188" y2="236" stroke-width="1"/>
+    <line class="grid" stroke="#ece9e2" x1="788" y1="196" x2="1188" y2="196" stroke-width="1"/>
+    <line class="grid" stroke="#ece9e2" x1="788" y1="156" x2="1188" y2="156" stroke-width="1"/>
   </g>
 
-  <!-- Bars: income (green) and spending (orange) -->
+  <!-- Money in against money out -->
   <g>
-    <rect class="in rise"  style="animation-delay:.60s" x="800"  y="160" width="16" height="76" rx="3"/>
-    <rect class="out rise" style="animation-delay:.66s" x="818"  y="196" width="16" height="40" rx="3"/>
-    <rect class="in rise"  style="animation-delay:.72s" x="860"  y="152" width="16" height="84" rx="3"/>
-    <rect class="out rise" style="animation-delay:.78s" x="878"  y="190" width="16" height="46" rx="3"/>
-    <rect class="in rise"  style="animation-delay:.84s" x="920"  y="164" width="16" height="72" rx="3"/>
-    <rect class="out rise" style="animation-delay:.90s" x="938"  y="194" width="16" height="42" rx="3"/>
-    <rect class="in rise"  style="animation-delay:.96s" x="980"  y="146" width="16" height="90" rx="3"/>
-    <rect class="out rise" style="animation-delay:1.02s" x="998" y="198" width="16" height="38" rx="3"/>
-    <rect class="in rise"  style="animation-delay:1.08s" x="1040" y="170" width="16" height="66" rx="3"/>
-    <rect class="out rise" style="animation-delay:1.14s" x="1058" y="192" width="16" height="44" rx="3"/>
-    <rect class="in rise"  style="animation-delay:1.20s" x="1100" y="158" width="16" height="78" rx="3"/>
-    <rect class="out rise" style="animation-delay:1.26s" x="1118" y="200" width="16" height="36" rx="3"/>
+    <rect class="accent rise" fill="#0e7a4b" style="animation-delay:.60s"  x="800"  y="160" width="16" height="76" rx="3"/>
+    <rect class="out rise"    fill="#e0873a" style="animation-delay:.66s"  x="818"  y="196" width="16" height="40" rx="3"/>
+    <rect class="accent rise" fill="#0e7a4b" style="animation-delay:.72s"  x="860"  y="152" width="16" height="84" rx="3"/>
+    <rect class="out rise"    fill="#e0873a" style="animation-delay:.78s"  x="878"  y="190" width="16" height="46" rx="3"/>
+    <rect class="accent rise" fill="#0e7a4b" style="animation-delay:.84s"  x="920"  y="164" width="16" height="72" rx="3"/>
+    <rect class="out rise"    fill="#e0873a" style="animation-delay:.90s"  x="938"  y="194" width="16" height="42" rx="3"/>
+    <rect class="accent rise" fill="#0e7a4b" style="animation-delay:.96s"  x="980"  y="146" width="16" height="90" rx="3"/>
+    <rect class="out rise"    fill="#e0873a" style="animation-delay:1.02s" x="998"  y="198" width="16" height="38" rx="3"/>
+    <rect class="accent rise" fill="#0e7a4b" style="animation-delay:1.08s" x="1040" y="170" width="16" height="66" rx="3"/>
+    <rect class="out rise"    fill="#e0873a" style="animation-delay:1.14s" x="1058" y="192" width="16" height="44" rx="3"/>
+    <rect class="accent rise" fill="#0e7a4b" style="animation-delay:1.20s" x="1100" y="158" width="16" height="78" rx="3"/>
+    <rect class="out rise"    fill="#e0873a" style="animation-delay:1.26s" x="1118" y="200" width="16" height="36" rx="3"/>
   </g>
 
   <!-- Budget progress -->
-  <rect class="track" x="1152" y="80" width="40" height="6" rx="3"/>
-  <rect class="in grow" x="1152" y="80" width="28" height="6" rx="3"/>
-
-  <!-- A ruled ledger line -->
-  <path class="rule draw" d="M74 272 H700" fill="none" stroke-width="2" stroke-linecap="round"/>
-  <circle class="in" cx="700" cy="272" r="4"/>
+  <rect class="track" fill="#eeebe4" x="1152" y="80" width="40" height="6" rx="3"/>
+  <rect class="accent grow" fill="#0e7a4b" x="1152" y="80" width="28" height="6" rx="3"/>
 </svg>
