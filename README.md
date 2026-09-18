@@ -96,6 +96,7 @@ Pick a range (this month, last month, last 3 or 12 months, year to date, or cust
 - **12 display currencies** (USD, EUR, GBP, BDT, INR, PKR, JPY, CAD, AUD, SGD, AED, CHF)
 - **Responsive** from small phones to wide monitors
 - **Keyboard friendly**: skip link, visible focus rings, <kbd>/</kbd> to search, <kbd>Esc</kbd> closes menus and dialogs
+- **Stays signed in** for 30 days on a device, so coming back means opening the app, not signing in again
 - **Account controls**: change username, email or password, export everything, or delete the account and all its data
 
 ## Screenshots
@@ -162,7 +163,7 @@ Sixpence is plain PHP 8.1+ with no framework, no Composer packages and no build 
 - **Self-contained front end.** One CSS design system with light and dark tokens, a little progressive-enhancement JavaScript, and fonts and Chart.js served locally. Every page works without JavaScript. Motion is kept short and purposeful — a page-to-page crossfade, sections that rise into place on the landing page — and stands down entirely for *prefers-reduced-motion*.
 - **Its own PDF engine and mail client.** Reports are drawn as vector PDFs by a small in-house writer; email goes through a built-in SMTP client (STARTTLS/SSL, AUTH) behind a queue, so a slow mail server never slows a page.
 - **Schema migrations** run automatically on first connect, and older databases upgrade in place.
-- **Tested.** A dependency-free suite of 65 unit and end-to-end tests covers money handling, recurrence, budgets, notifications, email, PDF output, migrations, and security properties such as CSRF, access control, escaping and rate limits. A GitHub Actions workflow runs it on PHP 8.1 to 8.4 against PostgreSQL 16.
+- **Tested.** A dependency-free suite of 68 unit and end-to-end tests covers money handling, recurrence, budgets, notifications, email, PDF output, migrations, and security properties such as CSRF, access control, escaping and rate limits. A GitHub Actions workflow runs it on PHP 8.1 to 8.4 against PostgreSQL 16.
 
 ```
 app/
@@ -188,6 +189,7 @@ tests/        run.php, unit and feature tests
 | **Passwords** | Hashed with `password_hash()` and rehashed as defaults improve. Changing or resetting a password signs out every other session and sends a security email. |
 | **Password reset** | 256-bit single-use tokens, stored only as hashes, valid for one hour. The form gives the same answer whether or not an account exists. |
 | **Sessions** | `HttpOnly`, `SameSite=Lax`, `Secure` over HTTPS, strict mode, ID regenerated at sign-in. |
+| **Staying signed in** | The cookie holds a lookup key and a 256-bit secret kept only as a hash. The secret is replaced on every use, so a copied cookie stops working the moment the real browser returns — and the replay drops every remembered login on the account. Signing out, changing a password and resetting one all clear them. |
 | **Exports & email** | CSV cells that a spreadsheet would run as formulas are neutralised; email headers can't be injected. |
 
 Found a security issue? Please report it privately through [GitHub](https://github.com/SamisDone) rather than opening a public issue.

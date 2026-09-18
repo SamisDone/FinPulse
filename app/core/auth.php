@@ -7,6 +7,8 @@ defined('SIXPENCE') || exit;
 const LOGIN_MAX_ATTEMPTS = 5;
 const LOGIN_LOCKOUT_SECONDS = 900;
 const PASSWORD_RESET_TTL = 3600;
+const REMEMBER_COOKIE = 'sixpence_remember';
+const REMEMBER_TTL = 2592000; // 30 days, extended every time the cookie is used
 
 /* ---------------------------------------------------------------------------
  * CSRF: one token per session, rotated on sign-in and sign-out.
@@ -46,6 +48,11 @@ function current_user(bool $refresh = false): ?array
         return $user;
     }
     $user = null;
+    if (empty($_SESSION['user_id'])) {
+        // No session: this may be a browser that was left signed in, or a session
+        // the server lost (a restart clears PHP's session files).
+        resume_remembered_login();
+    }
     if (!empty($_SESSION['user_id'])) {
         $stmt = db()->prepare('SELECT id, username, email, currency, notification_preferences, session_epoch, created_at FROM users WHERE id = ?');
         $stmt->execute([(int) $_SESSION['user_id']]);
@@ -90,11 +97,14 @@ function log_in(array $user): void
     $_SESSION['user_id'] = (int) $user['id'];
     $_SESSION['epoch'] = (int) $epoch->fetchColumn();
     unset($_SESSION['_csrf'], $_SESSION['_jobs_at']);
+    remember_login((int) $user['id']);
     current_user(true);
 }
 
 function log_out(): void
 {
+    discard_remember_token();
+    clear_remember_cookie();
     $_SESSION = [];
     if (ini_get('session.use_cookies')) {
         $p = session_get_cookie_params();
@@ -107,9 +117,13 @@ function log_out(): void
 function bump_session_epoch(int $user_id, bool $keep_current = false): void
 {
     db()->prepare('UPDATE users SET session_epoch = session_epoch + 1, updated_at = CURRENT_TIMESTAMP WHERE id = ?')->execute([$user_id]);
+    // Otherwise a device that was signed out would walk straight back in on its
+    // remembered login.
+    db()->prepare('DELETE FROM remember_tokens WHERE user_id = ?')->execute([$user_id]);
     if ($keep_current && (int) ($_SESSION['user_id'] ?? 0) === $user_id) {
         $_SESSION['epoch'] = (int) ($_SESSION['epoch'] ?? 0) + 1;
         session_regenerate_id(true);
+        remember_login($user_id);
     }
 }
 
@@ -124,6 +138,136 @@ function password_matches(int $user_id, string $password): bool
     $stmt = db()->prepare('SELECT password_hash FROM users WHERE id = ?');
     $stmt->execute([$user_id]);
     return password_verify($password, (string) $stmt->fetchColumn());
+}
+
+/* ---------------------------------------------------------------------------
+ * Remembered logins
+ *
+ * PHP's session cookie lasts until the browser closes, and the session itself
+ * lives in a file on the server that a restart or a new container throws away.
+ * Neither survives the way people expect, so signing in also leaves a long-lived
+ * cookie behind: a public selector to look the row up by, and a secret validator
+ * stored only as a hash. The pair is replaced on every use, so a stolen cookie
+ * stops working as soon as the real browser comes back.
+ * ------------------------------------------------------------------------ */
+
+function remember_cookie_params(int $expires): array
+{
+    return [
+        'expires' => $expires,
+        'path' => base_path() . '/',
+        'secure' => is_https(),
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ];
+}
+
+/**
+ * Issue the cookie for this browser. Passing the selector of a row that is already
+ * there refreshes its secret in place, which is what keeps the selector stable:
+ * a replayed old cookie then still finds its row, and the mismatched secret is
+ * what gives the theft away.
+ */
+function remember_login(int $user_id, ?string $selector = null): void
+{
+    if (PHP_SAPI === 'cli' || headers_sent()) {
+        return;
+    }
+    $validator = bin2hex(random_bytes(32));
+    $expires = time() + REMEMBER_TTL;
+
+    if ($selector === null) {
+        discard_remember_token();
+        $selector = bin2hex(random_bytes(16));
+        db()->prepare('INSERT INTO remember_tokens (user_id, selector, token_hash, expires_at, created_at) VALUES (?, ?, ?, ?, ?)')
+            ->execute([$user_id, $selector, hash('sha256', $validator), $expires, time()]);
+    } else {
+        db()->prepare('UPDATE remember_tokens SET token_hash = ?, expires_at = ? WHERE selector = ?')
+            ->execute([hash('sha256', $validator), $expires, $selector]);
+    }
+
+    $_SESSION['_remember'] = $selector;
+    $_COOKIE[REMEMBER_COOKIE] = $selector . ':' . $validator;
+    setcookie(REMEMBER_COOKIE, $selector . ':' . $validator, remember_cookie_params($expires));
+}
+
+/**
+ * Sign in from the cookie, if there is a usable one. Called only when there is no
+ * session, and deliberately silent: a cookie that doesn't check out just means
+ * the visitor sees the signed-out site.
+ */
+function resume_remembered_login(): void
+{
+    $cookie = $_COOKIE[REMEMBER_COOKIE] ?? '';
+    if ($cookie === '' || PHP_SAPI === 'cli' || headers_sent()) {
+        return;
+    }
+    if (!is_string($cookie) || !preg_match('/^([a-f0-9]{32}):([a-f0-9]{64})$/', $cookie, $parts)) {
+        clear_remember_cookie();
+        return;
+    }
+    [, $selector, $validator] = $parts;
+
+    $stmt = db()->prepare('SELECT t.id, t.user_id, t.token_hash, t.expires_at, u.session_epoch FROM remember_tokens t JOIN users u ON u.id = t.user_id WHERE t.selector = ?');
+    $stmt->execute([$selector]);
+    $token = $stmt->fetch();
+
+    if (!$token) {
+        clear_remember_cookie();
+        return;
+    }
+    if (!hash_equals((string) $token['token_hash'], hash('sha256', $validator))) {
+        // The row is real but the secret is one that has already been replaced:
+        // this cookie was copied before the browser it came from came back. Drop
+        // every remembered login on the account and make everyone sign in again.
+        // Two of this browser's own requests arriving at once can land here too;
+        // the cost of that is one extra sign-in, which is the right way round.
+        db()->prepare('DELETE FROM remember_tokens WHERE user_id = ?')->execute([(int) $token['user_id']]);
+        clear_remember_cookie();
+        return;
+    }
+    if ((int) $token['expires_at'] <= time()) {
+        db()->prepare('DELETE FROM remember_tokens WHERE id = ?')->execute([$token['id']]);
+        clear_remember_cookie();
+        return;
+    }
+
+    session_regenerate_id(true);
+    $_SESSION['user_id'] = (int) $token['user_id'];
+    $_SESSION['epoch'] = (int) $token['session_epoch'];
+    unset($_SESSION['_csrf'], $_SESSION['_jobs_at']);
+
+    // Spend the secret: this cookie only works once.
+    remember_login((int) $token['user_id'], $selector);
+}
+
+/** Delete the row behind whatever token this browser is carrying. */
+function discard_remember_token(): void
+{
+    $selector = $_SESSION['_remember'] ?? null;
+    if (!is_string($selector) && preg_match('/^([a-f0-9]{32}):/', (string) ($_COOKIE[REMEMBER_COOKIE] ?? ''), $parts)) {
+        $selector = $parts[1];
+    }
+    if (is_string($selector) && $selector !== '') {
+        db()->prepare('DELETE FROM remember_tokens WHERE selector = ?')->execute([$selector]);
+    }
+    unset($_SESSION['_remember']);
+}
+
+function clear_remember_cookie(): void
+{
+    unset($_COOKIE[REMEMBER_COOKIE]);
+    if (PHP_SAPI !== 'cli' && !headers_sent()) {
+        setcookie(REMEMBER_COOKIE, '', remember_cookie_params(time() - 3600));
+    }
+}
+
+/** Housekeeping for cron: drop tokens nobody can use any more. */
+function purge_expired_remember_tokens(): int
+{
+    $stmt = db()->prepare('DELETE FROM remember_tokens WHERE expires_at <= ?');
+    $stmt->execute([time()]);
+    return $stmt->rowCount();
 }
 
 /* ---------------------------------------------------------------------------

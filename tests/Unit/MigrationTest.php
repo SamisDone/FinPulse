@@ -63,7 +63,7 @@ test('an older database upgrades to the current schema without losing data', fun
             expect_true(in_array($column, column_names($pdo, 'users'), true), "users.$column");
         }
         expect_true(in_array('recurring_source_id', column_names($pdo, 'expenses'), true));
-        foreach (['login_attempts', 'password_resets', 'notifications', 'mail_queue'] as $table) {
+        foreach (['login_attempts', 'password_resets', 'remember_tokens', 'notifications', 'mail_queue'] as $table) {
             expect_true(table_exists($pdo, $table), "table $table");
         }
         expect_same('Lunch', $pdo->query('SELECT description FROM expenses')->fetchColumn());

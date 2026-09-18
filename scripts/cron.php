@@ -37,6 +37,7 @@ foreach ($users as $user) {
 use_currency(null);
 
 $mail = flush_mail_queue(200);
+purge_expired_remember_tokens();
 
 printf(
     "[%s] %s added, %s checked, %d email%s sent, %d failed (%.2fs)\n",

@@ -261,6 +261,26 @@ final class HttpClient
         return $this->get('/login')->post('/login', ['login' => $identifier, 'password' => $password])->follow();
     }
 
+    /** Throw away the session cookie, the way closing the browser (or a server restart) does. */
+    public function forgetSession(): self
+    {
+        unset($this->cookies['sixpence']); // the name start_secure_session() gives it
+        $this->last_token = '';
+        return $this;
+    }
+
+    public function cookie(string $name): string
+    {
+        return $this->cookies[$name] ?? '';
+    }
+
+    /** Start from a given cookie, the way another browser holding a copy would. */
+    public function withCookie(string $name, string $value): self
+    {
+        $this->cookies[$name] = $value;
+        return $this;
+    }
+
     public function redirectPath(): string
     {
         return (string) parse_url($this->headers['location'] ?? '', PHP_URL_PATH);

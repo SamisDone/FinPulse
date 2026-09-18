@@ -4,7 +4,7 @@
  */
 defined('SIXPENCE') || exit;
 
-const SCHEMA_VERSION = 3;
+const SCHEMA_VERSION = 4;
 
 function db(): PDO
 {

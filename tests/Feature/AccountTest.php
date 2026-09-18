@@ -74,6 +74,55 @@ test('sign out requires POST with a token', function () {
     expect_same('/login', $http->redirectPath());
 });
 
+test('a browser left signed in goes straight back to the dashboard', function () {
+    $user = make_user('remembered');
+    $http = (new HttpClient())->login($user['username'], $user['password']);
+    expect_same(200, $http->get('/dashboard')->status);
+
+    // The session is gone -- browser closed, or the server restarted and threw
+    // away its session files. Only the remembered-login cookie is left.
+    $http->forgetSession();
+    $http->get('/');
+    expect_same('/dashboard', $http->redirectPath(), 'the home page sends them on');
+    expect_same(200, $http->get('/dashboard')->status);
+
+    // And again, to prove the cookie was replaced rather than spent.
+    $http->forgetSession();
+    expect_same(200, $http->get('/dashboard')->status);
+});
+
+test('signing out is not remembered', function () {
+    $user = make_user('forgotten');
+    $http = (new HttpClient())->login($user['username'], $user['password']);
+    $http->post('/logout')->follow();
+
+    $http->forgetSession();
+    $http->get('/');
+    expect_same(200, $http->status, 'the home page stays the home page');
+    $http->get('/dashboard');
+    expect_same('/login', $http->redirectPath());
+});
+
+test('a copied remember cookie stops working once the real browser returns', function () {
+    $user = make_user('stolen');
+    $http = (new HttpClient())->login($user['username'], $user['password']);
+    $stolen = $http->cookie('sixpence_remember');
+    expect_true($stolen !== '', 'signing in leaves a remember cookie');
+
+    // The real browser comes back without its session and rotates the cookie.
+    $http->forgetSession();
+    expect_same(200, $http->get('/dashboard')->status);
+
+    $thief = (new HttpClient())->withCookie('sixpence_remember', $stolen);
+    $thief->get('/dashboard');
+    expect_same('/login', $thief->redirectPath(), 'the copied cookie is spent');
+
+    // Replaying it also cancels the real browser's remembered login.
+    $http->forgetSession();
+    $http->get('/dashboard');
+    expect_same('/login', $http->redirectPath(), 'and the account forgets every browser');
+});
+
 test('forgot password emails a link that resets the password and signs out other sessions', function () {
     $user = make_user('forgot');
     $other_device = (new HttpClient())->login($user['username'], $user['password']);
